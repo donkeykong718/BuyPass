@@ -5,6 +5,9 @@ import Image from "next/image";
 export default function AmazonCard(result) {
   const { asin, image, link, title, price, rating, ratings_total } = result;
 
+  console.log("This card is for:");
+  console.log(result);
+
   return (
     <div className="amazoncard">
       <Image src={image} alt="product" />

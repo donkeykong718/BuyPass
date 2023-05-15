@@ -15,37 +15,76 @@ export default function AmznResCol() {
 
   useEffect(() => {
     console.log("The useEffect has been triggered");
-    console.log("The searchTerm is" + searchTerm);
-    const getResults = async () => {
-      const results = await amazonSearch(searchTerm);
-      setResults(results);
-    };
+    console.log("The searchTerm is: " + searchTerm);
+    setSmallBusinesses([]);
     getResults();
   }, [searchTerm]);
 
+  // useEffect(() => {
+  //   console.log("Small businesses have changed:", smallBusinesses);
+  // }, [smallBusinesses]);
+
+  const getResults = async () => {
+    const res = await amazonSearch(searchTerm);
+    setResults(res);
+  };
+
   async function amazonSearch(searchTerm) {
     console.log("AmazonSearch has started");
-    console.log(rainforestKey);
     try {
       const res = await fetch(
         `${baseURL}api_key=${rainforestKey}&type=search&amazon_domain=${amazon_domain}&search_term=${searchTerm}`
       );
       const json = await res.json();
-      console.log(json);
       const searchResults = json.search_results;
 
       console.log("The search results are:");
       console.log(searchResults);
 
+      const smallBizArray = [];
+
       for (const result of searchResults) {
         if (result.is_small_business === true) {
-          setSmallBusinesses([smallBusinesses + result]);
+          console.log(result);
+          console.log("is a small business");
+          // let a = [...smallBusinesses, result];
+          // console.log("new array with small businesses and results ", a);
+          // setSmallBusinesses(a);
+          smallBizArray.push(result);
         }
       }
+      setSmallBusinesses([
+        {
+          asin: "asin",
+          image: "image",
+          link: "link",
+          title: "title",
+          price: "price",
+          rating: "rating",
+          ratings_total: "ratings_total",
+        },
+        {
+          asin: "asin 2",
+          image: "image 2",
+          link: "link 2",
+          title: "title 2",
+          price: "price 2",
+          rating: "rating 2",
+          ratings_total: "ratings_total 2",
+        },
+      ]);
+      // console.log("Small biz:");
+      console.log("Small biz:", smallBizArray);
+
+      // console.log("Small businesses:");
+
+      return smallBizArray;
     } catch (error) {
       console.log(error);
     }
   }
+
+  const testArray = [1, 2, 3, 4, 5];
   return (
     <div>
       {smallBusinesses.length === 0 ? (
@@ -62,9 +101,13 @@ export default function AmznResCol() {
         </div>
       ) : (
         <>
+          {/* {smallBizArray[1].asin} */}
           {smallBusinesses.map((result, index) => {
-            <AmazonCard result={result} key={index} />;
+            return <AmazonCard result={result} key={index} />;
           })}
+          {/* {testArray.map((number) => {
+            return <p className="bg-green-500">{number}</p>;
+          })} */}
         </>
       )}
     </div>
