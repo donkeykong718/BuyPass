@@ -4,7 +4,7 @@ import Link from "next/link";
 import AmazonCard from "./AmazonCard";
 // import "dotenv/config";
 
-const rainforestKey = process.env.NEXT_LOCAL_RAINFOREST_KEY;
+const rainforestKey = process.env.NEXT_PUBLIC_RAINFOREST_KEY;
 const baseURL = `https://api.rainforestapi.com/request?`;
 const amazon_domain = `amazon.com`;
 
