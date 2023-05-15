@@ -1,5 +1,4 @@
 import "./globals.css";
-import "dotenv/config";
 import Logo from "../components/Logo";
 import Header from "../components/Header";
 import React from "react";
