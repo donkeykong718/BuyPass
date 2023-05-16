@@ -53,26 +53,7 @@ export default function AmznResCol() {
           smallBizArray.push(result);
         }
       }
-      setSmallBusinesses([
-        {
-          asin: "asin",
-          image: "image",
-          link: "link",
-          title: "title",
-          price: "price",
-          rating: "rating",
-          ratings_total: "ratings_total",
-        },
-        {
-          asin: "asin 2",
-          image: "image 2",
-          link: "link 2",
-          title: "title 2",
-          price: "price 2",
-          rating: "rating 2",
-          ratings_total: "ratings_total 2",
-        },
-      ]);
+      setSmallBusinesses(smallBizArray);
       // console.log("Small biz:");
       console.log("Small biz:", smallBizArray);
 
