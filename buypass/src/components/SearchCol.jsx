@@ -19,10 +19,10 @@ export default function SearchCol() {
   };
 
   return (
-    <div id="searchBox">
+    <div id="searchBox" className="col-start-1">
       <form onSubmit={handleSearch}>
         <input onChange={handleSearchChange} type="text" className="search" />
-        <button className="unclicked">Search</button>
+        <button>Search</button>
       </form>
     </div>
   );

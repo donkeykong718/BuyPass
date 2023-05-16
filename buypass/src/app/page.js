@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
-      <main className="main">
+      <main className="grid grid-cols-3 grid-rows-auto gap-4 mt-10">
         <SearchCol />
         <AmznResCol />
         <GglResCol />

@@ -9,8 +9,159 @@ const baseURL = `https://api.rainforestapi.com/request?`;
 const amazon_domain = `amazon.com`;
 
 export default function AmznResCol() {
+  const sampleBiz = [
+    {
+      asin: "B075Y1SXRK",
+      image: "https://m.media-amazon.com/images/I/51CyQtl3a3L._AC_UL320_.jpg",
+      is_prime: true,
+      is_small_business: true,
+      link: "https://www.amazon.com/gp/slredirect/picassoRedirect.html/ref=pa_sp_atf_aps_sr_pg1_1?ie=UTF8&adId=A07740433OR086UV6VT7B&qualifier=1684247014&id=8613687666006664&widgetName=sp_atf&url=%2FBee-Harmony-American-Clover-Honey%2Fdp%2FB075Y1SXRK%2Fref%3Dsr_1_4_sspa%3Fkeywords%3Dhoney%26qid%3D1684247014%26sr%3D8-4-spons%26psc%3D1",
+      price: {
+        symbol: "$",
+        value: 12.29,
+        currency: "USD",
+        raw: "$12.29",
+        name: "$12.29",
+      },
+      rating: 4.6,
+      ratings_total: 508,
+      title: "Bee Harmony American Clover Honey, 12 Ounce",
+      unit_price: "$1.02/Fl Oz",
+    },
+    {
+      asin: "B08JVMXZRM",
+      image: "https://m.media-amazon.com/images/I/81+h1fol-rL._AC_UL320_.jpg",
+      is_small_business: true,
+      link: "https://www.amazon.com/gp/slredirect/picassoRedirect.html/ref=pa_sp_mtf_aps_sr_pg1_1?ie=UTF8&adId=A07739551ZVEPNOS28X72&qualifier=1684247014&id=8613687666006664&widgetName=sp_mtf&url=%2FBee-Harmony-Variety-Wildflower-Blossom%2Fdp%2FB08JVMXZRM%2Fref%3Dsr_1_15_sspa%3Fkeywords%3Dhoney%26qid%3D1684247014%26sr%3D8-15-spons%26psc%3D1",
+      price: {
+        symbol: "$",
+        value: 29.99,
+        currency: "USD",
+        raw: "$29.99",
+        name: "$29.99",
+      },
+      rating: 4.8,
+      ratings_total: 99,
+      title:
+        "Bee Harmony Honey 3 Pack Variety Pack, 36 Ounce (Clover, Wildflower and Orange Blossom)",
+      unit_price: "$2.50/Fl Oz",
+    },
+    {
+      asin: "B07DRJ3Y9C",
+      image: "https://m.media-amazon.com/images/I/71JVghMnadS._AC_UL320_.jpg",
+      is_prime: true,
+      is_small_business: true,
+      link: "https://www.amazon.com/Buzzn-Bee-Honey-Wildflower-Ounce/dp/B07DRJ3Y9C/ref=sr_1_18?keywords=honey&qid=1684247014&sr=8-18",
+      price: {
+        symbol: "$",
+        value: 21.49,
+        currency: "USD",
+        raw: "$21.49",
+        name: "$21.49",
+      },
+      rating: 4.6,
+      ratings_total: 517,
+      title:
+        "Florida Raw Apiaries | Raw and Unfiltered Wildflower Honey with Comb, 16 Ounce",
+      unit_price: "$1.34/Ounce",
+    },
+    {
+      asin: "B08PJ4KNJ8",
+      image: "https://m.media-amazon.com/images/I/71qe3mIHLUL._AC_UL320_.jpg",
+      is_prime: true,
+      is_small_business: true,
+      link: "https://www.amazon.com/gp/slredirect/picassoRedirect.html/ref=pa_sp_mtf_aps_sr_pg1_1?ie=UTF8&adId=A0932069RUM7F0HFQZIP&qualifier=1684247014&id=8613687666006664&widgetName=sp_mtf&url=%2FHoney-Feast-Gainesville-Jacksonville-Tallahassee%2Fdp%2FB08PJ4KNJ8%2Fref%3Dsr_1_29_sspa%3Fkeywords%3Dhoney%26qid%3D1684247014%26sr%3D8-29-spons%26psc%3D1",
+      price: {
+        symbol: "$",
+        value: 49,
+        currency: "USD",
+        raw: "$49.00",
+        name: "$49.00",
+      },
+      rating: 4.8,
+      ratings_total: 28,
+      title:
+        "Honey Feast Tupelo Honey 6lb - Authentic Florida Honey from Black Gum Tupelo & Holly Blend, Raw Honey Bulk, Pure American Honey from Central Florida Apiary",
+      unit_price: "$0.51/Ounce",
+    },
+    {
+      asin: "B0187T5AHS",
+      image: "https://m.media-amazon.com/images/I/71BYxKVqD6L._AC_UL320_.jpg",
+      is_prime: true,
+      is_small_business: true,
+      link: "https://www.amazon.com/Honey-Sticks-Clover-Blossom-Straws/dp/B0187T5AHS/ref=sr_1_34?keywords=honey&qid=1684247014&sr=8-34",
+      price: {
+        symbol: "$",
+        value: 19.99,
+        currency: "USD",
+        raw: "$19.99",
+        name: "$19.99",
+      },
+      rating: 4.6,
+      ratings_total: 8404,
+      title:
+        "The Honey Jar Plain Raw Honey Sticks - Pure Honey Straws For Tea, Coffee, or a Healthy Treat - One Teaspoon of Flavored Honey Per Stick - Made In The USA with Real Honey - (100 Count)",
+      unit_price: "$1.14/Ounce",
+    },
+    {
+      asin: "B08JVMXZRM",
+      image: "https://m.media-amazon.com/images/I/81+h1fol-rL._AC_UL320_.jpg",
+      is_small_business: true,
+      link: "https://www.amazon.com/Bee-Harmony-Variety-Wildflower-Blossom/dp/B08JVMXZRM/ref=sr_1_36?keywords=honey&qid=1684247014&sr=8-36",
+      price: {
+        symbol: "$",
+        value: 29.99,
+        currency: "USD",
+        raw: "$29.99",
+        name: "$29.99",
+      },
+      rating: 4.8,
+      ratings_total: 99,
+      title:
+        "Bee Harmony Honey 3 Pack Variety Pack, 36 Ounce (Clover, Wildflower and Orange Blossom)",
+      unit_price: "$2.50/Fl Oz",
+    },
+    {
+      asin: "B08JVLM7NH",
+      image: "https://m.media-amazon.com/images/I/81GUYA5eY8L._AC_UL320_.jpg",
+      is_small_business: true,
+      link: "https://www.amazon.com/Bee-Harmony-Variety-Wildflower-Blueberry/dp/B08JVLM7NH/ref=sr_1_38?keywords=honey&qid=1684247014&sr=8-38",
+      price: {
+        symbol: "$",
+        value: 45.99,
+        currency: "USD",
+        raw: "$45.99",
+        name: "$45.99",
+      },
+      rating: 4.7,
+      ratings_total: 96,
+      title:
+        "Bee Harmony Honey 5 Pack Variety Pack, 60 Ounce (Clover, Wildflower, Orange Blossom, Berry and Blueberry)",
+      unit_price: "$3.83/Fl Oz",
+    },
+    {
+      asin: "B008XF7ZP2",
+      image: "https://m.media-amazon.com/images/I/81mAip53m6L._AC_UL320_.jpg",
+      is_prime: true,
+      is_small_business: true,
+      link: "https://www.amazon.com/Big-Island-Bees-Honey-Organic/dp/B008XF7ZP2/ref=sr_1_59?keywords=honey&qid=1684247014&sr=8-59",
+      price: {
+        symbol: "$",
+        value: 19.99,
+        currency: "USD",
+        raw: "$19.99",
+        name: "$19.99",
+      },
+      rating: 4.5,
+      ratings_total: 846,
+      title:
+        "Organic Ohia Lehua Blossom Raw Hawaiian Honey, Single Floral Variety by Big Island Bees (9 oz Glass Jar)",
+      unit_price: "$2.22/Ounce",
+    },
+  ];
+
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
-  const [smallBusinesses, setSmallBusinesses] = useState([]);
+  const [smallBusinesses, setSmallBusinesses] = useState(sampleBiz);
   const [results, setResults] = useState([]);
 
   useEffect(() => {
@@ -53,7 +204,7 @@ export default function AmznResCol() {
           smallBizArray.push(result);
         }
       }
-      setSmallBusinesses(smallBizArray);
+      // setSmallBusinesses(smallBizArray);
       // console.log("Small biz:");
       console.log("Small biz:", smallBizArray);
 
@@ -65,11 +216,10 @@ export default function AmznResCol() {
     }
   }
 
-  const testArray = [1, 2, 3, 4, 5];
   return (
-    <div>
-      {smallBusinesses.length === 0 ? (
-        <div className="newAmazonCard">
+    <div className="col-start-2">
+      {sampleBiz.length === 0 ? (
+        <div>
           <p>There are no small businesses selling {searchTerm} on Amazon.</p>
           <div>
             <Link
@@ -81,15 +231,16 @@ export default function AmznResCol() {
           </div>
         </div>
       ) : (
-        <>
+        <div className="col-start-2">
+          <div className="font-bold px-1 ">Results</div>
           {/* {smallBizArray[1].asin} */}
-          {smallBusinesses.map((result, index) => {
+          {sampleBiz.map((result, index) => {
             return <AmazonCard result={result} key={index} />;
           })}
           {/* {testArray.map((number) => {
             return <p className="bg-green-500">{number}</p>;
           })} */}
-        </>
+        </div>
       )}
     </div>
   );
