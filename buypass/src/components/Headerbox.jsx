@@ -10,11 +10,11 @@ export default function Headerbox({ column }) {
 
   return (
     <div
-      className="headerbox"
+      className="headerbox text-center"
       style={{ gridColumnStart: { numId }, gridRowStart: "1" }}
       id={id}
     >
-      <h4 className="header">{heading}</h4>
+      <h4 className="m-1 font-bold">{heading}</h4>
       <p className="subheader">{subheading}</p>
     </div>
   );

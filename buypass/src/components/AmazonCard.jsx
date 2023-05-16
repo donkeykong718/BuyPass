@@ -1,25 +1,32 @@
 import React, { useContext, useState } from "react";
-import { SearchContext } from "@/app/page";
+import { BrandContext } from "@/app/page";
 import Image from "next/image";
 import Link from "next/link";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 
+const rainforestKey = process.env.NEXT_PUBLIC_RAINFOREST_KEY;
+const baseURL = `https://api.rainforestapi.com/request?`;
+const amazon_domain = `amazon.com`;
+
 export default function AmazonCard({ result }) {
   const { asin, image, link, title, price, rating, ratings_total, unit_price } =
     result;
+  const { brand, setBrand } = useContext(BrandContext);
 
-  console.log("This card is for:");
-  console.log(result);
-  console.log("asin:" + asin);
-  console.log("image:" + image);
-  console.log("link:" + link);
-  console.log("price:" + price.value);
-  console.log("rating:" + rating);
-  console.log("ratings_total:" + ratings_total);
+  const handleClick = async () => {
+    try {
+      const res = await fetch(
+        `${baseURL}api_key=${rainforestKey}&type=product&amazon_domain=${amazon_domain}&asin=${asin}`
+      );
+      const productObject = await res.json();
 
-  let starArray = [];
-  // let halfArray = false;
-  // let emptyArray = [];
+      const brandName = productObject.product.brand;
+      console.log(brandName);
+      setBrand(brandName);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleStars = (rating) => {
     for (let i = 0; i < Math.trunc(rating); i++) {
@@ -41,21 +48,19 @@ export default function AmazonCard({ result }) {
     }
 
     if (starArray.length < 5) {
-      for (let i = 0; i <= 5 - starlArray.length; i++) {
+      for (let i = 0; i <= 5 - starArray.length; i++) {
         starArray.push("empty");
       }
     }
 
-    // if (fullArray.includes("half"))
-    console.log("The star array is:");
-    console.log(starArray);
     return starArray;
   };
 
+  let starArray = [];
   handleStars(rating);
 
   return (
-    <div className="text-[#0F1111] block text-sm border-2 border-green-600 max-w-md px-1 h-[100%] mb-3 rounded">
+    <div className="text-[#0F1111] block text-sm max-w-md px-1 h-[100%] my-4 rounded">
       <div className="image-container mb-2 px-2 text-center bg-[#f7f7f7]">
         <div className="flex pt-[100%] relative cursor-pointer justify-center h-8 w-auto">
           <Image
@@ -64,7 +69,7 @@ export default function AmazonCard({ result }) {
             width={300}
             height={600}
             alt="product"
-            className="absolute top-0 align-top w-auto h-[100%] mx-auto"
+            className="absolute top-0 w-auto h-[100%] mx-auto bg-[#f7f7f7]"
           />
         </div>
       </div>
@@ -72,8 +77,8 @@ export default function AmazonCard({ result }) {
       <div className="px-2 mb-2">
         <div className="mt-2">
           <Link href={link} target="_blank" className="hover:text-[#C7511F]">
-            <h2 className="text-xs text-ellipsis overflow-hidden">{title}</h2>
-            <div className="mt-1 text-[#0F1111] font-bold text-sm">
+            <h2 className="text-s text-ellipsis overflow-hidden">{title}</h2>
+            <div className="mt-1 text-[#0F1111] font-bold text-xs">
               ASIN: {asin}
             </div>
           </Link>
@@ -95,7 +100,7 @@ export default function AmazonCard({ result }) {
                   break;
                 case "empty":
                   return (
-                    <BsStarEmpty className="pt-1 align-top inline text-[#FF9900]" />
+                    <BsStar className="pt-1 align-top inline text-[#FF9900]" />
                   );
                   break;
               }
@@ -123,11 +128,16 @@ export default function AmazonCard({ result }) {
         </div>
 
         <div className="flex">
-          <button className="inline-block bg-[#ffd81469] border-[#FCD200] text-sm leading-7 px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)] text-slate-400">
-            Buy on Amazon
-          </button>
-          <button className="inline-block bg-[#FFD814] border-[#FCD200] text-sm leading-7 px-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)]">
-            BUYPASS Amazon
+          <Link href={link} target="_blank">
+            <button className="inline-block bg-[#ffd81469] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)] text-slate-400">
+              Buy on Amazon
+            </button>
+          </Link>
+          <button
+            onClick={handleClick}
+            className="inline-block bg-[#FFD814] border-[#FCD200] text-sm px-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)]"
+          >
+            <span className="font-bold">BUYPASS </span>Amazon
           </button>
         </div>
       </div>

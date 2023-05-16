@@ -21,7 +21,10 @@ const columns = [
 
 export default function Header() {
   return (
-    <div className="topline">
+    <div
+      className="font-Bookerly row-start-1 col-start-1
+    col-span-3 grid grid-cols-3 gap-4 mt-10"
+    >
       {columns.map((column, index) => (
         <Headerbox column={column} key={index} />
       ))}

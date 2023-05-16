@@ -1,16 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("/Amazon_Typefaces_Complete_Font_Set_Mar2020");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  @font-face {
+  /* @font-face {
     font-family: Bookerly;
     src: "./Amazon_Typefaces_Complete_Font_Set_Mar2020" format("truetype");
   }
-  font-family: Bookerly;
+  font-family: Bookerly; */
 }
 
 body {
@@ -27,6 +28,7 @@ body {
 } */
 
 .logocontain {
+  font-family: Bookerly;
   position: relative;
   display: flex;
   margin: auto;
@@ -51,7 +53,7 @@ body {
   flex: auto;
 }
 
-.topline {
+/* .topline {
   grid-row-start: 1;
   grid-column-start: 1;
   grid-column-end: 4;
@@ -61,16 +63,16 @@ body {
   column-gap: 1em;
   row-gap: 1em;
   margin-top: 2.5rem;
-}
+} */
 
-.header {
+/* .header {
   text-align: center;
   margin: 5px;
 }
 
 .subheader {
   text-align: center;
-}
+} */
 
 form {
   display: flex;

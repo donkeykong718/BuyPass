@@ -161,7 +161,7 @@ export default function AmznResCol() {
   ];
 
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
-  const [smallBusinesses, setSmallBusinesses] = useState(sampleBiz);
+  const [smallBusinesses, setSmallBusinesses] = useState([]);
   const [results, setResults] = useState([]);
 
   useEffect(() => {
@@ -204,7 +204,7 @@ export default function AmznResCol() {
           smallBizArray.push(result);
         }
       }
-      // setSmallBusinesses(smallBizArray);
+      setSmallBusinesses(smallBizArray);
       // console.log("Small biz:");
       console.log("Small biz:", smallBizArray);
 
@@ -217,8 +217,8 @@ export default function AmznResCol() {
   }
 
   return (
-    <div className="col-start-2">
-      {sampleBiz.length === 0 ? (
+    <div className="col-start-1 col-span-2 font-Ember">
+      {smallBusinesses.length === 0 ? (
         <div>
           <p>There are no small businesses selling {searchTerm} on Amazon.</p>
           <div>
@@ -231,15 +231,13 @@ export default function AmznResCol() {
           </div>
         </div>
       ) : (
-        <div className="col-start-2">
-          <div className="font-bold px-1 ">Results</div>
-          {/* {smallBizArray[1].asin} */}
-          {sampleBiz.map((result, index) => {
-            return <AmazonCard result={result} key={index} />;
-          })}
-          {/* {testArray.map((number) => {
-            return <p className="bg-green-500">{number}</p>;
-          })} */}
+        <div className="col-start-1 col-span-2 font-Ember">
+          <div className="font-bold px-1">Results</div>
+          <div className="grid grid-cols-3">
+            {smallBusinesses.map((result, index) => {
+              return <AmazonCard result={result} key={index} />;
+            })}
+          </div>
         </div>
       )}
     </div>
