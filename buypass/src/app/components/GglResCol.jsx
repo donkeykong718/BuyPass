@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { BrandContext, SearchContext } from "@/app/(main)/page";
 import Link from "next/link";
 import Image from "next/image";
+import { fetchHtml } from "../utilities/fetchHtml";
+import { extractThumbnail } from "../utilities/extractThumbnail";
 
 const googleKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 const googleURL = `https://www.googleapis.com/customsearch/v1`;
@@ -11,6 +13,7 @@ export default function GglResCol() {
   const { brand, setBrand } = useContext(BrandContext);
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const [results, setResults] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
 
   useEffect(() => {
     getResults();
@@ -20,6 +23,16 @@ export default function GglResCol() {
     const res = await googleSearch(brand);
     setResults(res);
   };
+
+  useEffect(() => {
+    async function getThumbnail(url) {
+      const html = await fetchHtml(url);
+      const thumb = html ? extractThumbnail(html) : null;
+
+      setThumbnail(thumb);
+    }
+    getThumbnail(results.formattedUrl);
+  }, [results]);
 
   const googleSearch = async (brand) => {
     const lowBrandName = brand.toLowerCase();
@@ -92,9 +105,19 @@ export default function GglResCol() {
   };
 
   return (
-    <div className="row-start-1 col-start-2 col-span-2 border-2 border-blue-700 p-2 mb-[80vh]">
+    <div className="row-start-1 col-start-2 col-span-2 p-2 mb-[80vh]">
       {brand != "" ? (
         <div className="font-sans">
+          {thumbnail && (
+            <Image
+              loader={() => thumbnail}
+              src={thumbnail}
+              height={400}
+              width={400}
+              alt="Thumbnail"
+              className="w-100vw h-auto shadow-md rounded-lg"
+            />
+          )}
           <div className="py-2 text-sm">
             <p>{brand}</p>
             <p className="text-[#717377]">{results.formattedUrl}</p>
@@ -116,9 +139,11 @@ export default function GglResCol() {
         <>This is where Google goes.</>
       )}
       <></>
-      <div className="font-bold text-center mt-20">
+      <div className="font-bold text-center mt-[15vh]">
         <Link href="/#1">
-          <button>Search Again</button>
+          <button className="py-3 px-6 rounded-2xl bg-[#4285F4] text-[#f7f7f7] shadow-md shadow-yellow-500">
+            Search Again
+          </button>
         </Link>
       </div>
     </div>
