@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { BrandContext } from "@/app/page";
+import { BrandContext } from "@/app/(main)/page";
 import Image from "next/image";
 import Link from "next/link";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
@@ -12,6 +12,9 @@ export default function AmazonCard({ result }) {
   const { asin, image, link, title, price, rating, ratings_total, unit_price } =
     result;
   const { brand, setBrand } = useContext(BrandContext);
+
+  const dollars = Math.trunc(price.value);
+  const cents = price.value - Math.trunc(price.value);
 
   const handleClick = async () => {
     try {
@@ -77,7 +80,9 @@ export default function AmazonCard({ result }) {
       <div className="px-2 mb-2">
         <div className="mt-2">
           <Link href={link} target="_blank" className="hover:text-[#C7511F]">
-            <h2 className="text-s text-ellipsis overflow-hidden">{title}</h2>
+            <h2 className="text-s line-clamp-3 text-ellipsis hover:line-clamp-none">
+              {title}
+            </h2>
             <div className="mt-1 text-[#0F1111] font-bold text-xs">
               ASIN: {asin}
             </div>
@@ -85,7 +90,7 @@ export default function AmazonCard({ result }) {
         </div>
 
         <div>
-          <div className="border-2 border-blue-300">
+          <div>
             {starArray.map((star) => {
               switch (star) {
                 case "full":
@@ -105,8 +110,8 @@ export default function AmazonCard({ result }) {
                   break;
               }
             })}
-            <span className="ml-1 font-bold">{rating}</span>
-            <span className="text-xs text-[#007185] ml-2">
+            <span className="mx-1 font-bold">{rating}</span>
+            <span className="inline-block text-xs text-[#007185]">
               ({ratings_total} reviews)
             </span>
           </div>
@@ -114,31 +119,41 @@ export default function AmazonCard({ result }) {
 
         <div className="mt-2">
           <div>
-            <span className="top-[-.75em] text-xs">$</span>
-            <span className="text-2xl">{Math.trunc(price.value)}</span>
+            <span className="absolute pt-1 text-xs">{price.symbol}</span>
+            <span className="text-2xl ml-1.5">{dollars}</span>
             <span className="absolute">
               <span className="relative text-xs">
-                {Math.trunc(
-                  (price.value - Math.trunc(price.value)).toFixed(2) * 100
+                {cents === 0 ? (
+                  <>00</>
+                ) : (
+                  <>
+                    {Math.trunc(
+                      (price.value - Math.trunc(price.value)).toFixed(2) * 100
+                    )}
+                  </>
                 )}
               </span>
             </span>
-            <span className="ml-5 text-[#565959] text-sm">({unit_price})</span>
+            <span className="ml-5 text-[#565959] text-sm">
+              {unit_price ? <>({unit_price})</> : <></>}
+            </span>
           </div>
         </div>
 
-        <div className="flex">
+        <div className="flex border-2 justify-center align-middle border-green-500">
           <Link href={link} target="_blank">
-            <button className="inline-block bg-[#ffd81469] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)] text-slate-400">
+            <button className="flex-auto inline-block bg-[#ffd81469] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)] text-slate-400">
               Buy on Amazon
             </button>
           </Link>
-          <button
-            onClick={handleClick}
-            className="inline-block bg-[#FFD814] border-[#FCD200] text-sm px-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)]"
-          >
-            <span className="font-bold">BUYPASS </span>Amazon
-          </button>
+          <Link href="/#3">
+            <button
+              onClick={handleClick}
+              className="flex-auto inline-block bg-[#FFD814] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)]"
+            >
+              <span className="font-bold">BUYPASS </span>Amazon
+            </button>
+          </Link>
         </div>
       </div>
     </div>

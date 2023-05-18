@@ -3,20 +3,23 @@
 @tailwind utilities;
 @import url("/Amazon_Typefaces_Complete_Font_Set_Mar2020");
 
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* @font-face {
+  @font-face {
     font-family: Bookerly;
     src: "./Amazon_Typefaces_Complete_Font_Set_Mar2020" format("truetype");
   }
-  font-family: Bookerly; */
+  font-family: Bookerly; 
 }
 
 body {
   min-height: 100vh;
-}
+  max-width: 100vw;
+  padding-left: 8px;
+  padding-right: 8px;
+} */
 
 /* .main {
   display: grid;

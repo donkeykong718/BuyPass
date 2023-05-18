@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BrandContext, SearchContext } from "@/app/page";
+import { BrandContext, SearchContext } from "@/app/(main)/page";
+import Link from "next/link";
+import Image from "next/image";
 
 const googleKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 const googleURL = `https://www.googleapis.com/customsearch/v1`;
@@ -82,6 +84,7 @@ export default function GglResCol() {
           brandSearchResult.shift();
         } else exclude = false;
       }
+      console.log(brandSearchResult[0]);
       return brandSearchResult[0];
     } catch (error) {
       console.log(error);
@@ -89,17 +92,35 @@ export default function GglResCol() {
   };
 
   return (
-    <div className="col-start-3">
+    <div className="row-start-1 col-start-2 col-span-2 border-2 border-blue-700 p-2 mb-[80vh]">
       {brand != "" ? (
-        <div className="border-2 border-gree-500">
-          <div>{results.title}</div>
-          <div>{results.snippet}</div>
-          <div>{results.formattedUrl}</div>
+        <div className="font-sans">
+          <div className="py-2 text-sm">
+            <p>{brand}</p>
+            <p className="text-[#717377]">{results.formattedUrl}</p>
+          </div>
+          <div className="text-[#180ea4] text-xl mb-1 hover:underline">
+            <Link href={results.formattedUrl} target="_blank">
+              {results.title}
+            </Link>
+          </div>
+          {/* <Image
+            src={results.pagemap.cse_image[0].src}
+            width={500}
+            height={500}
+            alt="local"
+          /> */}
+          <div className="font-Ember text-[#606367]">{results.snippet}</div>
         </div>
       ) : (
         <>This is where Google goes.</>
       )}
       <></>
+      <div className="font-bold text-center mt-20">
+        <Link href="/#1">
+          <button>Search Again</button>
+        </Link>
+      </div>
     </div>
   );
 }
