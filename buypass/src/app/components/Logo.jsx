@@ -1,19 +1,22 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Logo() {
   return (
-    <div className="fixed w-[100%] text-center font-Bookerly pt-14 pb-7 text-4xl font-bold min-h-auto bg-white z-[99999999] translate-y-[-8px]">
-      <Image
-        className="absolute
-        flex-auto t-[50%] l-[50%] translate-y-[-50%] scale-[65%] scale-x-75"
-        // id="logoarrow"
-        src="/arrowonly.png"
-        width={667}
-        height={146}
-        alt="logo"
-      />
-      <p>buypass</p>
-    </div>
+    <Link href="/" scroll={true}>
+      <div className="sticky top-0 flex align-top justify-center w-[100vw] pt-1 pb-7 min-h-fit bg-white z-[99999999]">
+        <Image
+          // id="logoarrow"
+          src="/buypass_logo.png"
+          width={500}
+          height={500}
+          alt="logo"
+        />
+        {/* <p className="flex-auto font-Bookerly text-4xl sm:text-5xl smd:text-6xl md:text-7xl font-bold ">
+        buypass
+      </p> */}
+      </div>
+    </Link>
   );
 }

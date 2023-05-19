@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BrandContext, SearchContext } from "@/app/(main)/page";
+import { BrandContext, SearchContext } from "@/app/page";
 import Link from "next/link";
 import Image from "next/image";
 import { fetchHtml } from "../utilities/fetchHtml";
 import { extractThumbnail } from "../utilities/extractThumbnail";
+import { extractIcon } from "../utilities/extractIcon";
 
 const googleKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 const googleURL = `https://www.googleapis.com/customsearch/v1`;
@@ -14,6 +15,7 @@ export default function GglResCol() {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const [results, setResults] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
+  const [icon, setIcon] = useState(null);
 
   useEffect(() => {
     getResults();
@@ -25,13 +27,17 @@ export default function GglResCol() {
   };
 
   useEffect(() => {
-    async function getThumbnail(url) {
+    async function getImages(url) {
       const html = await fetchHtml(url);
-      const thumb = html ? extractThumbnail(html) : null;
+      const thumbnail_src = html ? extractThumbnail(html) : null;
+      // const icon_src = extractIcon(url);
+      // console.log("Extract icon returns:");
+      // console.log(icon_src);
 
-      setThumbnail(thumb);
+      setThumbnail(thumbnail_src);
+      // setIcon(icon_src);
     }
-    getThumbnail(results.formattedUrl);
+    getImages(results.formattedUrl);
   }, [results]);
 
   const googleSearch = async (brand) => {
@@ -105,7 +111,7 @@ export default function GglResCol() {
   };
 
   return (
-    <div className="row-start-1 col-start-2 col-span-2 p-2 mb-[80vh]">
+    <div className="p-2 text-left">
       {brand != "" ? (
         <div className="font-sans">
           {thumbnail && (
@@ -115,12 +121,23 @@ export default function GglResCol() {
               height={400}
               width={400}
               alt="Thumbnail"
-              className="w-100vw h-auto shadow-md rounded-lg"
+              className="w-100vw h-auto shadow-md rounded-lg mb-2"
             />
           )}
-          <div className="py-2 text-sm">
-            <p>{brand}</p>
-            <p className="text-[#717377]">{results.formattedUrl}</p>
+          <div className="pb-2 flex text-sm">
+            {/* {icon != null && (
+              <Image
+                loader={() => icon}
+                src={icon}
+                height={16}
+                weight={16}
+                alt="favicon"
+              />
+            )} */}
+            <div>
+              <p>{brand}</p>
+              <p className="text-[#717377]">{results.formattedUrl}</p>
+            </div>
           </div>
           <div className="text-[#180ea4] text-xl mb-1 hover:underline">
             <Link href={results.formattedUrl} target="_blank">
@@ -134,18 +151,17 @@ export default function GglResCol() {
             alt="local"
           /> */}
           <div className="font-Ember text-[#606367]">{results.snippet}</div>
+          <div className="mt-4 font-bold text-center">
+            <Link href="/#1">
+              <button className="md:hidden py-3 px-6 rounded-2xl bg-[#4285F4] text-[#f7f7f7] shadow-sm shadow-[#febd69]">
+                Search Again
+              </button>
+            </Link>
+          </div>
         </div>
       ) : (
-        <>This is where Google goes.</>
+        <></>
       )}
-      <></>
-      <div className="font-bold text-center mt-[15vh]">
-        <Link href="/#1">
-          <button className="py-3 px-6 rounded-2xl bg-[#4285F4] text-[#f7f7f7] shadow-md shadow-yellow-500">
-            Search Again
-          </button>
-        </Link>
-      </div>
     </div>
   );
 }

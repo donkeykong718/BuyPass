@@ -1,5 +1,6 @@
 import "./globals.css";
 import Logo from "./components/Logo";
+import Loader from "./components/Loader";
 import React from "react";
 
 export const metadata = {
@@ -10,7 +11,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="p-0 m-0 border-box scroll-smooth">
-      <body className="m-0 px-2 pt-2">
+      <body>
+        <Loader />
         <Logo />
         {children}
       </body>

@@ -1,4 +1,4 @@
-import { SearchContext } from "@/app/(main)/page";
+import { SearchContext } from "@/app/page";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import AmazonCard from "./AmazonCard";
@@ -11,19 +11,19 @@ const amazon_domain = `amazon.com`;
 
 export default function AmznResCol() {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
-  const [smallBusinesses, setSmallBusinesses] = useState(data);
+  const [smallBusinesses, setSmallBusinesses] = useState([]);
   const [results, setResults] = useState([]);
 
-  // useEffect(() => {
-  //   console.log("The useEffect has been triggered");
-  //   console.log("The searchTerm is: " + searchTerm);
-  //   setSmallBusinesses([]);
-  //   getResults();
-  // }, [searchTerm]);
+  useEffect(() => {
+    console.log("The useEffect has been triggered");
+    console.log("The searchTerm is: " + searchTerm);
+    results ? setResults([]) : console.log("There were no results to reset");
+    getResults();
+  }, [searchTerm]);
 
-  // useEffect(() => {
-  //   console.log("Small businesses have changed:", smallBusinesses);
-  // }, [smallBusinesses]);
+  useEffect(() => {
+    console.log("Small businesses have changed:", smallBusinesses);
+  }, [smallBusinesses]);
 
   const getResults = async () => {
     const res = await amazonSearch(searchTerm);
@@ -54,7 +54,7 @@ export default function AmznResCol() {
           smallBizArray.push(result);
         }
       }
-      setSmallBusinesses(data);
+      setSmallBusinesses(smallBizArray);
       // console.log("Small biz:");
       console.log("Small biz:", smallBizArray);
 
@@ -67,8 +67,8 @@ export default function AmznResCol() {
   }
 
   return (
-    <div className="col-start-1 col-span-2 font-Ember">
-      {smallBusinesses.length === 0 ? (
+    <div className="font-Ember">
+      {searchTerm != "" && smallBusinesses.length === 0 ? (
         <div>
           <p>There are no small businesses selling {searchTerm} on Amazon.</p>
           <div>
@@ -82,7 +82,11 @@ export default function AmznResCol() {
         </div>
       ) : (
         <div className="font-Ember">
-          <div className="font-bold px-1">Results</div>
+          {searchTerm != "" ? (
+            <div className="text-left font-bold px-1">Results</div>
+          ) : (
+            <></>
+          )}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
             {smallBusinesses.map((result, index) => {
               return <AmazonCard result={result} key={index} />;

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { BrandContext } from "@/app/(main)/page";
+import { BrandContext } from "@/app/page";
 import Image from "next/image";
 import Link from "next/link";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
@@ -13,8 +13,13 @@ export default function AmazonCard({ result }) {
     result;
   const { brand, setBrand } = useContext(BrandContext);
 
-  const dollars = Math.trunc(price.value);
-  const cents = price.value - Math.trunc(price.value);
+  let itemPrice;
+  price.value
+    ? (itemPrice = price.value)
+    : (itemPrice = parseInt(price.raw.slice(1)));
+
+  const dollars = Math.trunc(itemPrice);
+  const cents = itemPrice - Math.trunc(itemPrice);
 
   const handleClick = async () => {
     try {
@@ -128,14 +133,14 @@ export default function AmazonCard({ result }) {
                 ) : (
                   <>
                     {Math.trunc(
-                      (price.value - Math.trunc(price.value)).toFixed(2) * 100
+                      (itemPrice - Math.trunc(itemPrice)).toFixed(2) * 100
                     )}
                   </>
                 )}
               </span>
             </span>
             <span className="ml-5 text-[#565959] text-sm">
-              {unit_price ? <>({unit_price})</> : <></>}
+              {unit_price && <>({unit_price})</>}
             </span>
           </div>
         </div>

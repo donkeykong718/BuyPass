@@ -7,9 +7,6 @@ export default function Headerbox({ column }) {
   id > 1 ? (order = 1 + Math.pow(2, id - 1)) : (order = 1);
 
   let numId = parseInt(id);
-  console.log(`Starting on column` + parseInt(id));
-
-  console.log(typeof numId);
 
   return (
     <div style={{ gridColumnStart: { numId }, gridRowStart: "1" }} id={id}>
