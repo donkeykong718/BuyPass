@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { BrandContext } from "@/app/page";
+import { BrandContext, GLoadingContext, ModalContext } from "@/app/page";
 import Image from "next/image";
 import Link from "next/link";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
@@ -12,16 +12,21 @@ export default function AmazonCard({ result }) {
   const { asin, image, link, title, price, rating, ratings_total, unit_price } =
     result;
   const { brand, setBrand } = useContext(BrandContext);
+  const { gLoading, setGLoading } = useContext(GLoadingContext);
+  const { showModal, setShowModal } = useContext(ModalContext);
 
   let itemPrice;
-  price.value
-    ? (itemPrice = price.value)
-    : (itemPrice = parseInt(price.raw.slice(1)));
+  let dollars;
+  let cents;
 
-  const dollars = Math.trunc(itemPrice);
-  const cents = itemPrice - Math.trunc(itemPrice);
+  if (price) {
+    itemPrice = parseInt(price.raw.slice(1));
+    dollars = Math.trunc(itemPrice);
+    cents = itemPrice - Math.trunc(itemPrice);
+  }
 
   const handleClick = async () => {
+    setGLoading(true);
     try {
       const res = await fetch(
         `${baseURL}api_key=${rainforestKey}&type=product&amazon_domain=${amazon_domain}&asin=${asin}`
@@ -31,6 +36,7 @@ export default function AmazonCard({ result }) {
       const brandName = productObject.product.brand;
       console.log(brandName);
       setBrand(brandName);
+      setShowModal(true);
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +74,7 @@ export default function AmazonCard({ result }) {
   handleStars(rating);
 
   return (
-    <div className="text-[#0F1111] block text-sm max-w-md px-1 h-[100%] my-4 rounded">
+    <div className="text-[#0F1111] block text-sm max-w-md px-1 h-[100%] my-4 rounded z-0">
       <div className="image-container mb-2 px-2 text-center bg-[#f7f7f7]">
         <div className="flex pt-[100%] relative cursor-pointer justify-center h-8 w-auto">
           <Image
@@ -122,43 +128,43 @@ export default function AmazonCard({ result }) {
           </div>
         </div>
 
-        <div className="mt-2">
-          <div>
-            <span className="absolute pt-1 text-xs">{price.symbol}</span>
-            <span className="text-2xl ml-1.5">{dollars}</span>
-            <span className="absolute">
-              <span className="relative text-xs">
-                {cents === 0 ? (
-                  <>00</>
-                ) : (
-                  <>
-                    {Math.trunc(
-                      (itemPrice - Math.trunc(itemPrice)).toFixed(2) * 100
-                    )}
-                  </>
-                )}
+        {price && (
+          <div className="mt-2">
+            <div>
+              <span className="absolute pt-1 text-xs">{price.symbol}</span>
+              <span className="text-2xl ml-1.5">{dollars}</span>
+              <span className="absolute">
+                <span className="relative text-xs">
+                  {cents === 0 ? (
+                    <>00</>
+                  ) : (
+                    <>
+                      {Math.trunc(
+                        (itemPrice - Math.trunc(itemPrice)).toFixed(2) * 100
+                      )}
+                    </>
+                  )}
+                </span>
               </span>
-            </span>
-            <span className="ml-5 text-[#565959] text-sm">
-              {unit_price && <>({unit_price})</>}
-            </span>
+              <span className="ml-5 text-[#565959] text-sm">
+                {unit_price && <>({unit_price})</>}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="flex border-2 justify-center align-middle border-green-500">
+        <div className="flex border-2 justify-center align-middle">
           <Link href={link} target="_blank">
             <button className="flex-auto inline-block bg-[#ffd81469] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)] text-slate-400">
               Buy on Amazon
             </button>
           </Link>
-          <Link href="/#3">
-            <button
-              onClick={handleClick}
-              className="flex-auto inline-block bg-[#FFD814] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)]"
-            >
-              <span className="font-bold">BUYPASS </span>Amazon
-            </button>
-          </Link>
+          <button
+            onClick={handleClick}
+            className="flex-auto inline-block bg-[#FFD814] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)]"
+          >
+            <span className="font-bold">BUYPASS </span>Amazon
+          </button>
         </div>
       </div>
     </div>

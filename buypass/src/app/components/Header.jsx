@@ -15,14 +15,14 @@ const columns = [
   {
     id: "3",
     heading: "3. Buy Direct",
-    subheading: "...and go straight to the source!",
+    subheading: "...then go straight to the source!",
   },
 ];
 
 export default function Header() {
   return (
     <div
-      className="flex flex-col font-Bookerly pt-4 text-sm "
+      className="max-h-[20vh] grid grid-cols-3 font-Bookerly mx-1 mt-3 pb-3 text-center line-clamp-2 z-50"
       // row-start-1 col-start-1
       // col-span-3 grid grid-cols-3 gap-4 mt-10
     >

@@ -5,9 +5,10 @@ import Link from "next/link";
 export default function Logo() {
   return (
     <Link href="/" scroll={true}>
-      <div className="sticky top-0 flex align-top justify-center w-[100vw] pt-1 pb-7 min-h-fit bg-white z-[99999999]">
+      <div className="flex align-top justify-center w-[100vw] pt-1 pb-2  min-h-fit bg-white">
         <Image
           // id="logoarrow"
+          className="max-h-[20vh] h-[12vh] md:h-[16vh] mdl:h-[18vh] lg:h-[20vh] w-auto"
           src="/buypass_logo.png"
           width={500}
           height={500}

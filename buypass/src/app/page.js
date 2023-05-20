@@ -5,67 +5,66 @@ import SearchCol from "./components/SearchCol";
 import AmznResCol from "./components/AmznResCol";
 import GglResCol from "./components/GglResCol";
 
-export const SearchContext = React.createContext();
 export const BrandContext = React.createContext();
+export const GLoadingContext = React.createContext();
+export const ModalContext = React.createContext();
+export const SearchContext = React.createContext();
+export const SearchTermContext = React.createContext();
 
 export default function Main() {
-  const [searchTerm, setSearchTerm] = useState("");
   const [brand, setBrand] = useState("");
-
-  const columns = [
-    {
-      id: "1",
-      heading: "1. Search Global",
-      subheading: "Search Amazon's database of 350+ million products...",
-    },
-    {
-      id: "2",
-      heading: "2. Find Local",
-      subheading: "...for those made by small businesses...",
-    },
-    {
-      id: "3",
-      heading: "3. Buy Direct",
-      subheading: "...then go straight to the source!",
-    },
-  ];
+  const [gLoading, setGLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [search, setSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
-      <BrandContext.Provider value={{ brand, setBrand }}>
+    <SearchContext.Provider value={{ search, setSearch }}>
+      <SearchTermContext.Provider value={{ searchTerm, setSearchTerm }}>
         {/* <main className="absolute mt-[15vh] flex flex-col max-h-100 overflow-y-scroll sm:mt-[40vh] smd:mt-[45vh] md:mt-[50vh] z-0 md:grid grid-cols-3 grid-rows-3"> */}
-        <main className="md:grid grid-cols-3 grid-rows-auto text-center font-Bookerly">
-          <div
+        <main className="text-center font-Bookerly">
+          {/* md:grid grid-cols-3 grid-rows-auto  */}
+
+          {/* <div
             id="1"
             className="mb-4 min-h-fit col-start-1 row-start-1 md:h-[16vh] overflow-hidden md:mb-0"
           >
             <h4 className="font-bold md:text-lg">{columns[0].heading}</h4>
             <p className="text-sm md:text-base">{columns[0].subheading}</p>
-          </div>
-          <div className="mb-8 col-start-1 row-start-2 col-span-3 md:h-[16vh] md:mb-0">
+          </div> */}
+
+          <div className="fixed top-[24vh] md:top-[28vh] mdl:top-[32vh] bg-white h-[10vh] w-[100%] lg:h-fit my-4 col-start-1 row-start-2 col-span-3 md:h-[16vh] md:mb-0 z-50">
             <SearchCol />
           </div>
-          <div
+
+          {/* <div
             id="2"
             className="mb-4 min-h-fit col-start-2 row-start-1 md:h-[16vh] md:mb-0"
           >
             <h4 className="font-bold md:text-lg">{columns[1].heading}</h4>
             <p className="text-sm md:text-base">{columns[1].subheading}</p>
-          </div>
-          <div className="mb-4 col-start-1 row-start-3 col-span-3 md:h-fit">
-            <AmznResCol />
-          </div>
-          <div
+          </div> */}
+
+          <BrandContext.Provider value={{ brand, setBrand }}>
+            <ModalContext.Provider value={{ showModal, setShowModal }}>
+              <GLoadingContext.Provider value={{ gLoading, setGLoading }}>
+                {/* <div className="top-[40vh] mb-4 col-start-1 row-start-3 col-span-3 md:h-fit"> */}
+                <AmznResCol />
+                {/* </div> */}
+                {/* <div
             id="3"
             className="mb-4 col-start-3 row-start-1 md:h-[16vh] md:mb-0"
-          >
+          >å
             <h4 className="font-bold md:text-lg">{columns[2].heading}</h4>
             <p className="text-sm md:text-base">{columns[2].subheading}</p>
-          </div>
-          <div className="col-start-2 row-start-2 col-span-2 h-fit md:max-h-[32vh]">
-            <GglResCol />
-          </div>
-          <div className="h-[100vh]"></div>
+          </div> */}
+
+                {showModal && <GglResCol />}
+              </GLoadingContext.Provider>
+            </ModalContext.Provider>
+          </BrandContext.Provider>
+
+          {/* <div className="h-[100vh]"></div> */}
         </main>
         {/* <div
             id="1"
@@ -93,7 +92,7 @@ export default function Main() {
           </div>
           <GglResCol className="col-start-2 row-start-2 col-span-2  md:bg-purple-400" /> */}
         {/* </main> */}
-      </BrandContext.Provider>
+      </SearchTermContext.Provider>
     </SearchContext.Provider>
   );
 }

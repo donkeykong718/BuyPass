@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BrandContext, SearchContext } from "@/app/page";
+import { BrandContext, GLoadingContext, SearchContext } from "@/app/page";
 import Link from "next/link";
 import Image from "next/image";
 import { fetchHtml } from "../utilities/fetchHtml";
@@ -12,6 +12,7 @@ const customSearch = process.env.NEXT_PUBLIC_googleCustomSearch;
 
 export default function GglResCol() {
   const { brand, setBrand } = useContext(BrandContext);
+  const { gLoading, setGLoading } = useContext(GLoadingContext);
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const [results, setResults] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
@@ -38,6 +39,7 @@ export default function GglResCol() {
       // setIcon(icon_src);
     }
     getImages(results.formattedUrl);
+    setGLoading(false);
   }, [results]);
 
   const googleSearch = async (brand) => {
@@ -111,21 +113,19 @@ export default function GglResCol() {
   };
 
   return (
-    <div className="p-2 text-left">
-      {brand != "" ? (
-        <div className="font-sans">
-          {thumbnail && (
-            <Image
-              loader={() => thumbnail}
-              src={thumbnail}
-              height={400}
-              width={400}
-              alt="Thumbnail"
-              className="w-100vw h-auto shadow-md rounded-lg mb-2"
-            />
-          )}
-          <div className="pb-2 flex text-sm">
-            {/* {icon != null && (
+    <div className="font-sans">
+      {thumbnail && (
+        <Image
+          loader={() => thumbnail}
+          src={thumbnail}
+          height={400}
+          width={400}
+          alt="Thumbnail"
+          className="w-100vw h-auto shadow-md rounded-lg mb-2"
+        />
+      )}
+      <div className="pb-2 flex text-sm">
+        {/* {icon != null && (
               <Image
                 loader={() => icon}
                 src={icon}
@@ -134,34 +134,30 @@ export default function GglResCol() {
                 alt="favicon"
               />
             )} */}
-            <div>
-              <p>{brand}</p>
-              <p className="text-[#717377]">{results.formattedUrl}</p>
-            </div>
-          </div>
-          <div className="text-[#180ea4] text-xl mb-1 hover:underline">
-            <Link href={results.formattedUrl} target="_blank">
-              {results.title}
-            </Link>
-          </div>
-          {/* <Image
+        <div>
+          <p>{brand}</p>
+          <p className="text-[#717377]">{results.formattedUrl}</p>
+        </div>
+      </div>
+      <div className="text-[#180ea4] text-xl mb-1 hover:underline">
+        {/* <Link href={results.formattedUrl} target="_blank"> */}
+        {results.title}
+        {/* </Link> */}
+      </div>
+      {/* <Image
             src={results.pagemap.cse_image[0].src}
             width={500}
             height={500}
             alt="local"
           /> */}
-          <div className="font-Ember text-[#606367]">{results.snippet}</div>
-          <div className="mt-4 font-bold text-center">
-            <Link href="/#1">
-              <button className="md:hidden py-3 px-6 rounded-2xl bg-[#4285F4] text-[#f7f7f7] shadow-sm shadow-[#febd69]">
-                Search Again
-              </button>
-            </Link>
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
+      <div className="font-Ember text-[#606367]">{results.snippet}</div>
+      <div className="mt-4 font-bold text-center">
+        <Link href="/">
+          <button className="md:hidden py-3 px-6 rounded-2xl bg-[#4285F4] text-[#f7f7f7] shadow-sm shadow-[#febd69]">
+            Search Again
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
