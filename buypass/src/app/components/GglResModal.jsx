@@ -1,19 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BrandContext, GLoadingContext, SearchContext } from "@/app/page";
+import { BrandContext, GLoadingContext, SearchTermContext } from "@/app/page";
+import { ModalContext } from "./AmazonCard";
 import Link from "next/link";
 import Image from "next/image";
 import { fetchHtml } from "../utilities/fetchHtml";
 import { extractThumbnail } from "../utilities/extractThumbnail";
 import { extractIcon } from "../utilities/extractIcon";
+import Loader from "./Loader";
+import GResults from "./GResults";
+import { AiOutlineClose } from "react-icons/ai";
 
 const googleKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 const googleURL = `https://www.googleapis.com/customsearch/v1`;
 const customSearch = process.env.NEXT_PUBLIC_googleCustomSearch;
 
-export default function GglResCol() {
-  const { brand, setBrand } = useContext(BrandContext);
-  const { gLoading, setGLoading } = useContext(GLoadingContext);
-  const { searchTerm, setSearchTerm } = useContext(SearchContext);
+export default function GglResCol({ brand, gLoading, setGLoading }) {
+  const { showModal, setShowModal } = useContext(ModalContext);
+  // const { brand, setBrand } = useContext(BrandContext);
+  // const { gLoading, setGLoading } = useContext(GLoadingContext);
+  const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
   const [results, setResults] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
   const [icon, setIcon] = useState(null);
@@ -23,7 +28,8 @@ export default function GglResCol() {
   }, [brand]);
 
   const getResults = async () => {
-    const res = await googleSearch(brand);
+    const res = brand ? await googleSearch(brand) : null;
+    console.log(res);
     setResults(res);
   };
 
@@ -44,7 +50,8 @@ export default function GglResCol() {
 
   const googleSearch = async (brand) => {
     const lowBrandName = brand.toLowerCase();
-    const lowSearchTerm = searchTerm.toLowerCase();
+    let lowSearchTerm;
+    lowSearchTerm = searchTerm ? searchTerm.toLowerCase() : "";
     let fullSearch = ``;
 
     if (
@@ -113,47 +120,29 @@ export default function GglResCol() {
   };
 
   return (
-    <div className="font-sans">
-      {thumbnail && (
-        <Image
-          loader={() => thumbnail}
-          src={thumbnail}
-          height={400}
-          width={400}
-          alt="Thumbnail"
-          className="w-100vw h-auto shadow-md rounded-lg mb-2"
-        />
+    <div className="fixed mt-20 h-fit w-fit p-4 min-h-[33vh] min-w[33vw] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-sans bg-white border-2 z-[999999] shadow-[100px_100px_100px_9999999px_rgba(0,0,0,0.7)]">
+      <div className="flex justify-end">
+        <button
+          onClick={setShowModal(false)}
+          className="cursor-pointer -mt-2 -mr-2"
+        >
+          <AiOutlineClose />
+        </button>
+      </div>
+      {gLoading ? (
+        <Loader />
+      ) : (
+        <GResults thumbnail={thumbnail} brand={brand} results={results} />
       )}
-      <div className="pb-2 flex text-sm">
-        {/* {icon != null && (
-              <Image
-                loader={() => icon}
-                src={icon}
-                height={16}
-                weight={16}
-                alt="favicon"
-              />
-            )} */}
-        <div>
-          <p>{brand}</p>
-          <p className="text-[#717377]">{results.formattedUrl}</p>
-        </div>
-      </div>
-      <div className="text-[#180ea4] text-xl mb-1 hover:underline">
-        {/* <Link href={results.formattedUrl} target="_blank"> */}
-        {results.title}
-        {/* </Link> */}
-      </div>
-      {/* <Image
-            src={results.pagemap.cse_image[0].src}
-            width={500}
-            height={500}
-            alt="local"
-          /> */}
-      <div className="font-Ember text-[#606367]">{results.snippet}</div>
-      <div className="mt-4 font-bold text-center">
+
+      <div className="flex mt-4 font-bold justify-around">
         <Link href="/">
-          <button className="md:hidden py-3 px-6 rounded-2xl bg-[#4285F4] text-[#f7f7f7] shadow-sm shadow-[#febd69]">
+          <button
+            onClick={() => {
+              setShowModal(false);
+            }}
+            className="py-3 px-6 rounded-2xl bg-[#4285F4] text-[#f7f7f7] shadow-sm"
+          >
             Search Again
           </button>
         </Link>

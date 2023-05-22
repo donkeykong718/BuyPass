@@ -6,7 +6,7 @@ import SearchCol from "../components/SearchCol";
 import AmznResCol from "../components/AmznResCol";
 import GglResCol from "../components/GglResModal";
 
-export const SearchTermContext = React.createContext();
+export const SearchContext = React.createContext();
 export const BrandContext = React.createContext();
 
 export default function Main() {
@@ -32,7 +32,7 @@ export default function Main() {
   ];
 
   return (
-    <SearchTermContext.Provider value={{ searchTerm, setSearchTerm }}>
+    <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
       <BrandContext.Provider value={{ brand, setBrand }}>
         {/* <main className="absolute mt-[15vh] flex flex-col max-h-100 overflow-y-scroll sm:mt-[40vh] smd:mt-[45vh] md:mt-[50vh] z-0 md:grid grid-cols-3 grid-rows-3"> */}
         <main className="md:grid grid-cols-3 grid-rows-auto text-center font-Bookerly">
@@ -96,6 +96,6 @@ export default function Main() {
           <GglResCol className="col-start-2 row-start-2 col-span-2  md:bg-purple-400" /> */}
         {/* </main> */}
       </BrandContext.Provider>
-    </SearchTermContext.Provider>
+    </SearchContext.Provider>
   );
 }

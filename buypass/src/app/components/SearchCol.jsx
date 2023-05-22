@@ -28,14 +28,14 @@ export default function SearchCol() {
   return (
     <div
       id="searchBox"
-      className="bg-[#141920] flex justify-center align-middle py-2 max-h-fit z-40"
+      className="bg-[#141920] flex justify-center align-middle py-2"
     >
       <div className="w-[75%] rounded-lg py-[1px] m-auto focus-within:bg-[#f19e39] focus-within:translate">
         <form onSubmit={handleSearch}>
           <input
             onChange={handleSearchChange}
             type="text"
-            className="rounded-l-lg p-2 translate-x-[2px] h-10 w-[100%] z-0 text-sm font-Ember focus:outline-none md:text-base"
+            className="rounded-l-lg p-2 translate-x-[2px] h-10 w-[100%] text-sm font-Ember focus:outline-none md:text-base"
             placeholder="Search Amazon"
           />
           {/* <Link href="/#results" scroll={true}> */}

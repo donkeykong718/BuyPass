@@ -3,10 +3,6 @@
 @tailwind utilities;
 @import url("/Amazon_Typefaces_Complete_Font_Set_Mar2020");
 
-Image {
-  z-index: 0;
-}
-
 /* * {
   margin: 0;
   padding: 0;

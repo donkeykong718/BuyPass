@@ -3,26 +3,26 @@
 import React, { useState } from "react";
 import SearchCol from "./components/SearchCol";
 import AmznResCol from "./components/AmznResCol";
-import GglResCol from "./components/GglResCol";
+import GglResCol from "./components/GglResModal";
 
 export const BrandContext = React.createContext();
 export const GLoadingContext = React.createContext();
-export const ModalContext = React.createContext();
+// export const ModalContext = React.createContext();
 export const SearchContext = React.createContext();
 export const SearchTermContext = React.createContext();
 
 export default function Main() {
   const [brand, setBrand] = useState("");
   const [gLoading, setGLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("honey");
 
   return (
     <SearchContext.Provider value={{ search, setSearch }}>
       <SearchTermContext.Provider value={{ searchTerm, setSearchTerm }}>
         {/* <main className="absolute mt-[15vh] flex flex-col max-h-100 overflow-y-scroll sm:mt-[40vh] smd:mt-[45vh] md:mt-[50vh] z-0 md:grid grid-cols-3 grid-rows-3"> */}
-        <main className="text-center font-Bookerly">
+        <main className="relative text-center font-Bookerly">
           {/* md:grid grid-cols-3 grid-rows-auto  */}
 
           {/* <div
@@ -33,7 +33,7 @@ export default function Main() {
             <p className="text-sm md:text-base">{columns[0].subheading}</p>
           </div> */}
 
-          <div className="fixed top-[24vh] md:top-[28vh] mdl:top-[32vh] bg-white h-[10vh] w-[100%] lg:h-fit my-4 col-start-1 row-start-2 col-span-3 md:h-[16vh] md:mb-0 z-50">
+          <div className="fixed top-[22%] sm:top-[24%] smd:top-[26%] md:top-[28%] mdl:top-[30%] lg:top-[32%] bg-white h-[10vh] w-[100%] lg:h-fit pt-4 col-start-1 row-start-2 col-span-3 md:h-[16vh] z-10">
             <SearchCol />
           </div>
 
@@ -44,9 +44,9 @@ export default function Main() {
             <h4 className="font-bold md:text-lg">{columns[1].heading}</h4>
             <p className="text-sm md:text-base">{columns[1].subheading}</p>
           </div> */}
-
-          <BrandContext.Provider value={{ brand, setBrand }}>
-            <ModalContext.Provider value={{ showModal, setShowModal }}>
+          <div className="top-[32%] sm:top-[34%] smd:top-[36%] md:top-[38%] mdl:top-[40%] lg:top-[42%] bg-red-500 sm:bg-orange-500 smd:bg-yellow-500 md:bg-green-500 mdl:bg-blue-500 lg:bg-purple-500">
+            <BrandContext.Provider value={{ brand, setBrand }}>
+              {/* <ModalContext.Provider value={{ showModal, setShowModal }}> */}
               <GLoadingContext.Provider value={{ gLoading, setGLoading }}>
                 {/* <div className="top-[40vh] mb-4 col-start-1 row-start-3 col-span-3 md:h-fit"> */}
                 <AmznResCol />
@@ -59,10 +59,11 @@ export default function Main() {
             <p className="text-sm md:text-base">{columns[2].subheading}</p>
           </div> */}
 
-                {showModal && <GglResCol />}
+                {/* {showModal && <GglResCol />} */}
               </GLoadingContext.Provider>
-            </ModalContext.Provider>
-          </BrandContext.Provider>
+              {/* </ModalContext.Provider> */}
+            </BrandContext.Provider>
+          </div>
 
           {/* <div className="h-[100vh]"></div> */}
         </main>

@@ -17,13 +17,13 @@ export default function AmznResCol() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log("The useEffect has been triggered");
-    console.log("The searchTerm is: " + searchTerm);
-    setLoading(true);
-    console.log(`Loading is set to ${loading} (hopefully true)`);
-    getResults();
-  }, [search]);
+  // useEffect(() => {
+  //   console.log("The useEffect has been triggered");
+  //   console.log("The searchTerm is: " + searchTerm);
+  //   setLoading(true);
+  //   console.log(`Loading is set to ${loading} (hopefully true)`);
+  //   getResults();
+  // }, [search]);
 
   // useEffect(() => {
   //   console.log("Small businesses have changed:", smallBusinesses);
@@ -80,7 +80,7 @@ export default function AmznResCol() {
       {/* {search && ( */}
       <div className="text-left font-bold px-1 ease-in">Results</div>
       {/* )} */}
-      {loading && search && <Loader className="ease-in" />}
+      {loading && search && <Loader />}
       {searchTerm != "" && smallBusinesses.length === 0 && !loading ? (
         <div>
           <p>There are no small businesses selling {searchTerm} on Amazon.</p>
