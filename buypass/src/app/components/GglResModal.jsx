@@ -1,58 +1,67 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BrandContext, GLoadingContext, SearchTermContext } from "@/app/page";
-import { ModalContext } from "./AmazonCard";
+
 import Link from "next/link";
-import Image from "next/image";
-import { fetchHtml } from "../utilities/fetchHtml";
-import { extractThumbnail } from "../utilities/extractThumbnail";
-import { extractIcon } from "../utilities/extractIcon";
+
 import Loader from "./Loader";
 import GResults from "./GResults";
+
+import {
+  BrandContext,
+  GLoadingContext,
+  ModalContext,
+  SearchTermContext,
+} from "@/app/page";
+
+import { extractThumbnail } from "../utilities/extractThumbnail";
+import { extractIcon } from "../utilities/extractIcon";
+import { fetchHtml } from "../utilities/fetchHtml";
+
 import { AiOutlineClose } from "react-icons/ai";
 
 const googleKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 const googleURL = `https://www.googleapis.com/customsearch/v1`;
 const customSearch = process.env.NEXT_PUBLIC_googleCustomSearch;
 
-export default function GglResCol({ brand, gLoading, setGLoading }) {
-  const { showModal, setShowModal } = useContext(ModalContext);
-  // const { brand, setBrand } = useContext(BrandContext);
-  // const { gLoading, setGLoading } = useContext(GLoadingContext);
+export default function GglResModal() {
+  const { brand, setBrand } = useContext(BrandContext);
+  const { gLoading, setGLoading } = useContext(GLoadingContext);
+  const { modal, setModal } = useContext(ModalContext);
   const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
+
   const [results, setResults] = useState("");
-  const [thumbnail, setThumbnail] = useState(null);
-  const [icon, setIcon] = useState(null);
+  const [thumbnail, setThumbnail] = useState("");
+  const [icon, setIcon] = useState("");
 
   useEffect(() => {
-    getResults();
+    brand ? getResults() : console.log("No brand");
   }, [brand]);
 
   const getResults = async () => {
-    const res = brand ? await googleSearch(brand) : null;
+    const res = await googleSearch(brand);
     console.log(res);
     setResults(res);
+    setGLoading(false);
   };
 
   useEffect(() => {
     async function getImages(url) {
       const html = await fetchHtml(url);
       const thumbnail_src = html ? extractThumbnail(html) : null;
-      // const icon_src = extractIcon(url);
-      // console.log("Extract icon returns:");
-      // console.log(icon_src);
+      const icon_src = extractIcon(url);
+      console.log("Extract icon returns:");
+      console.log(icon_src);
 
       setThumbnail(thumbnail_src);
-      // setIcon(icon_src);
+      setIcon(icon_src);
     }
-    getImages(results.formattedUrl);
-    setGLoading(false);
+    results ? getImages(results.formattedUrl) : console.log("No results yet");
   }, [results]);
 
   const googleSearch = async (brand) => {
     const lowBrandName = brand.toLowerCase();
     let lowSearchTerm;
+    let fullSearch;
     lowSearchTerm = searchTerm ? searchTerm.toLowerCase() : "";
-    let fullSearch = ``;
 
     if (
       lowBrandName.includes(lowSearchTerm) &&
@@ -119,16 +128,24 @@ export default function GglResCol({ brand, gLoading, setGLoading }) {
     }
   };
 
+  const handleClick = () => {
+    setModal(false);
+  };
+
   return (
-    <div className="fixed mt-20 h-fit w-fit p-4 min-h-[33vh] min-w[33vw] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-sans bg-white border-2 z-[999999] shadow-[100px_100px_100px_9999999px_rgba(0,0,0,0.7)]">
+    <div className="absolute mt-20 h-fit w-fit p-4 min-h-[33vh] min-w-[33vw] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-sans bg-white border-2 shadow-[100px_100px_100px_9999999px_rgba(0,0,0,0.7)] z-50">
       <div className="flex justify-end">
         <button
-          onClick={setShowModal(false)}
+          onClick={() => {
+            handleClick();
+          }}
+          // onClick={setModal(false)}
           className="cursor-pointer -mt-2 -mr-2"
         >
           <AiOutlineClose />
         </button>
       </div>
+
       {gLoading ? (
         <Loader />
       ) : (
@@ -139,11 +156,11 @@ export default function GglResCol({ brand, gLoading, setGLoading }) {
         <Link href="/">
           <button
             onClick={() => {
-              setShowModal(false);
+              handleClick();
             }}
             className="py-3 px-6 rounded-2xl bg-[#4285F4] text-[#f7f7f7] shadow-sm"
           >
-            Search Again
+            New Search
           </button>
         </Link>
       </div>

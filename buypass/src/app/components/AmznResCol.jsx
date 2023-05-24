@@ -1,33 +1,34 @@
-import { SearchContext, SearchTermContext } from "@/app/page";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import AmazonCard from "./AmazonCard";
-import data from "../../sample.json" assert { type: "json" };
+
 import Loader from "./Loader";
-// import "dotenv/config";
+import AmazonCard from "./AmazonCard";
+
+import { SearchContext, SearchTermContext } from "@/app/page";
+import data from "../../sample.json" assert { type: "json" };
 
 const rainforestKey = process.env.NEXT_PUBLIC_RAINFOREST_KEY;
 const baseURL = `https://api.rainforestapi.com/request?`;
 const amazon_domain = `amazon.com`;
 
+// export const ModalContext = React.createContext();
+
 export default function AmznResCol() {
   const { search, setSearch } = useContext(SearchContext);
   const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
+
   const [smallBusinesses, setSmallBusinesses] = useState(data);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
 
-  // useEffect(() => {
-  //   console.log("The useEffect has been triggered");
-  //   console.log("The searchTerm is: " + searchTerm);
-  //   setLoading(true);
-  //   console.log(`Loading is set to ${loading} (hopefully true)`);
-  //   getResults();
-  // }, [search]);
-
-  // useEffect(() => {
-  //   console.log("Small businesses have changed:", smallBusinesses);
-  // }, [smallBusinesses]);
+  useEffect(() => {
+    console.log("The useEffect has been triggered");
+    console.log("The searchTerm is: " + searchTerm);
+    setLoading(true);
+    console.log(`Loading is set to ${loading} (hopefully true)`);
+    getResults();
+  }, [search]);
 
   const getResults = async () => {
     const res = await amazonSearch(searchTerm);
@@ -52,19 +53,11 @@ export default function AmznResCol() {
 
       for (const result of searchResults) {
         if (result.is_small_business === true) {
-          console.log(result);
-          console.log("is a small business");
-          // let a = [...smallBusinesses, result];
-          // console.log("new array with small businesses and results ", a);
-          // setSmallBusinesses(a);
           smallBizArray.push(result);
         }
       }
       setSmallBusinesses(smallBizArray);
-      // console.log("Small biz:");
       console.log("Small biz:", smallBizArray);
-
-      // console.log("Small businesses:");
 
       return smallBizArray;
     } catch (error) {
@@ -73,12 +66,9 @@ export default function AmznResCol() {
   }
 
   return (
-    <div
-      id="results"
-      className="top-[36vh] md:top-[40vh] mdl:top-[44vh] lg:top-[48vh] relative font-Ember z-0"
-    >
+    <div id="results" className="mt-4 font-Ember z-0 overflow-y-scroll">
       {/* {search && ( */}
-      <div className="text-left font-bold px-1 ease-in">Results</div>
+      <div className="sticky text-left font-bold px-1 ease-in">Results</div>
       {/* )} */}
       {loading && search && <Loader />}
       {searchTerm != "" && smallBusinesses.length === 0 && !loading ? (
@@ -94,11 +84,13 @@ export default function AmznResCol() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+        // <ModalContext.Provider value={{ showModal, setShowModal }}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 overflow-y-scroll">
           {smallBusinesses.map((result, index) => {
             return <AmazonCard result={result} key={index} />;
           })}
         </div>
+        // </ModalContext.Provider>
       )}
     </div>
   );

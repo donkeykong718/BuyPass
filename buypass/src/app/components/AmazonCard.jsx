@@ -1,25 +1,25 @@
 import React, { useContext, useState } from "react";
-import { BrandContext, GLoadingContext } from "@/app/page";
+
 import Image from "next/image";
 import Link from "next/link";
-import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
+
 import GglResModal from "./GglResModal";
+
+import { BrandContext, GLoadingContext, ModalContext } from "../page";
+
+import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 
 const rainforestKey = process.env.NEXT_PUBLIC_RAINFOREST_KEY;
 const baseURL = `https://api.rainforestapi.com/request?`;
 const amazon_domain = `amazon.com`;
 
-export const ModalContext = React.createContext();
-
 export default function AmazonCard({ result }) {
+  const { modal, setModal } = useContext(ModalContext);
+  const { brand, setBrand } = useContext(BrandContext);
+  const { gLoading, setGLoading } = useContext(GLoadingContext);
+
   const { asin, image, link, title, price, rating, ratings_total, unit_price } =
     result;
-  // const { brand, setBrand } = useContext(BrandContext);
-  const [brand, setBrand] = useState("");
-  // const { gLoading, setGLoading } = useContext(GLoadingContext);
-  const [gLoading, setGLoading] = useState(false);
-  // const { showModal, setShowModal } = useContext(ModalContext);
-  const [showModal, setShowModal] = useState(false);
 
   let itemPrice;
   let dollars;
@@ -33,7 +33,7 @@ export default function AmazonCard({ result }) {
 
   const handleClick = async () => {
     setGLoading(true);
-    setShowModal(true);
+    setModal(true);
     try {
       const res = await fetch(
         `${baseURL}api_key=${rainforestKey}&type=product&amazon_domain=${amazon_domain}&asin=${asin}`
@@ -82,8 +82,16 @@ export default function AmazonCard({ result }) {
 
   return (
     <div className="text-[#0F1111] block text-sm max-w-md px-1 h-[100%] my-4 rounded">
-      <div className="image-container mb-2 px-2 text-center bg-[#f7f7f7]">
-        <div className="flex pt-[100%] relative cursor-pointer justify-center h-8 w-auto">
+      {/* {showModal && (
+        <GglResModal
+          brand={brand}
+          gLoading={gLoading}
+          setGLoading={setGLoading}
+        />
+      )} */}
+
+      <div className="relative mb-2 px-2 text-center bg-[#f7f7f7]">
+        <div className="flex pt-[100%] justify-center h-8 w-auto z-0">
           <Image
             loader={() => image}
             src={image}
@@ -94,18 +102,6 @@ export default function AmazonCard({ result }) {
           />
         </div>
       </div>
-      <ModalContext.Provider value={{ showModal, setShowModal }}>
-        {" "}
-        {showModal && (
-          <GglResModal
-            brand={brand}
-            gLoading={gLoading}
-            setGLoading={setGLoading}
-            closeModal={setShowModal}
-          />
-        )}
-      </ModalContext.Provider>
-
       <div className="px-2 mb-2">
         <div className="mt-2">
           <Link href={link} target="_blank" className="hover:text-[#C7511F]">
@@ -126,17 +122,17 @@ export default function AmazonCard({ result }) {
                   return (
                     <BsStarFill className="pt-1 align-top inline text-[#FF9900]" />
                   );
-                  break;
+                // break;
                 case "half":
                   return (
                     <BsStarHalf className="pt-1 align-top inline text-[#FF9900]" />
                   );
-                  break;
+                // break;
                 case "empty":
                   return (
                     <BsStar className="pt-1 align-top inline text-[#FF9900]" />
                   );
-                  break;
+                // break;
               }
             })}
             <span className="mx-1 font-bold">{rating}</span>

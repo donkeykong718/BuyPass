@@ -1,7 +1,6 @@
 import "./globals.css";
 import Logo from "./components/Logo";
 import Header from "./components/Header";
-import React from "react";
 
 export const metadata = {
   title: "BuyPass",
@@ -11,14 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="p-0 m-0 border-box scroll-smooth">
-      <body className="h-[100vh]">
-        <div className="fixed top-0 z-10 bg-white min-h-[25%] max-h-[32%]">
-          <Logo />
-          <Header />
-        </div>
-        {/* <div className="sticky flex top-0 min-h-[40vh]"></div> */}
-        {children}
-      </body>
+      <body className="h-[100vh]">{children}</body>
     </html>
   );
 }
