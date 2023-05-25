@@ -4,6 +4,15 @@ import Link from "next/link";
 export default function Loader() {
   return (
     <div className="text-center text-lg pb-[8] font-Ember">
+      {/* <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/77cMmCVBT3g?controls=0&amp;start=73"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe> */}
       <p className="text-xl font-bold mb-2">Did you know?</p>
       <p>Amazon's speed comes with a hidden cost: </p>
       <p className="text-red-500 italic font-bold">worker exploitation</p>

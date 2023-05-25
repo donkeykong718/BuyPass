@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 
 import Logo from "./components/Logo";
 import Header from "./components/Header";
 import SearchCol from "./components/SearchCol";
 import AmznResCol from "./components/AmznResCol";
 import GglResModal from "./components/GglResModal";
+import Loader from "./components/Loader";
 
 export const BrandContext = React.createContext();
 export const GLoadingContext = React.createContext();
@@ -19,10 +20,10 @@ export default function Main() {
   const [gLoading, setGLoading] = useState(false);
   const [modal, setModal] = useState(false);
   const [search, setSearch] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("honey");
+  const [searchTerm, setSearchTerm] = useState(null);
 
   return (
-    <main className="fixed top-0 text-center font-Bookerly">
+    <main className="text-center font-Bookerly">
       <div className=" bg-white min-h-[25%] max-h-[32%]">
         <Logo />
         <Header />
@@ -47,8 +48,9 @@ export default function Main() {
                 ) : (
                   <></>
                 )}
-
-                <AmznResCol />
+                <Suspense fallback={<Loader />}>
+                  {!(searchTerm == null) && <AmznResCol />}
+                </Suspense>
               </BrandContext.Provider>
             </ModalContext.Provider>
           </GLoadingContext.Provider>

@@ -7,8 +7,8 @@ export default function GResults({ thumbnail, brand, results }) {
     <div className="text-left min-h-fit">
       {thumbnail && (
         <Image
-          loader={() => thumbnail}
           src={thumbnail}
+          loader={() => thumbnail}
           height={400}
           width={400}
           alt="Thumbnail"
@@ -16,7 +16,7 @@ export default function GResults({ thumbnail, brand, results }) {
         />
       )}
       <div className="pb-2 flex text-sm">
-        {/* {icon != null && (
+        {!(icon == null) && (
           <Image
             loader={() => icon}
             src={icon}
@@ -24,7 +24,7 @@ export default function GResults({ thumbnail, brand, results }) {
             weight={16}
             alt="favicon"
           />
-        )} */}
+        )}
         <div>
           <p>{brand}</p>
           <p className="text-[#717377]">{results.formattedUrl}</p>

@@ -17,7 +17,7 @@ export default function AmznResCol() {
   const { search, setSearch } = useContext(SearchContext);
   const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
 
-  const [smallBusinesses, setSmallBusinesses] = useState(data);
+  const [smallBusinesses, setSmallBusinesses] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   // const [showModal, setShowModal] = useState(false);
@@ -85,7 +85,7 @@ export default function AmznResCol() {
         </div>
       ) : (
         // <ModalContext.Provider value={{ showModal, setShowModal }}>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 overflow-y-scroll">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
           {smallBusinesses.map((result, index) => {
             return <AmazonCard result={result} key={index} />;
           })}

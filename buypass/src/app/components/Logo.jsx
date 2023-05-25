@@ -8,6 +8,7 @@ export default function Logo() {
       <div className="flex align-top justify-center w-[100vw] pt-1 pb-2  min-h-fit bg-white">
         <Image
           // id="logoarrow"
+          priority={true}
           className="max-h-[20vh] h-[12vh] min-h-[10vh] md:h-[16vh] mdl:h-[18vh] lg:h-[20vh] w-auto"
           src="/buypass_logo.png"
           width={500}

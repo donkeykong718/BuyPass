@@ -93,12 +93,13 @@ export default function AmazonCard({ result }) {
       <div className="relative mb-2 px-2 text-center bg-[#f7f7f7]">
         <div className="flex pt-[100%] justify-center h-8 w-auto z-0">
           <Image
-            loader={() => image}
             src={image}
+            loader={() => image}
+            unoptimized={true}
+            className="absolute top-0 w-auto h-[100%] mx-auto bg-[#f7f7f7]"
             width={300}
             height={600}
             alt="product"
-            className="absolute top-0 w-auto h-[100%] mx-auto bg-[#f7f7f7]"
           />
         </div>
       </div>

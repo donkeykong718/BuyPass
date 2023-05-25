@@ -28,9 +28,9 @@ export default function GglResModal() {
   const { modal, setModal } = useContext(ModalContext);
   const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
 
-  const [results, setResults] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-  const [icon, setIcon] = useState("");
+  const [results, setResults] = useState(null);
+  const [thumbnail, setThumbnail] = useState(null);
+  const [icon, setIcon] = useState(null);
 
   useEffect(() => {
     brand ? getResults() : console.log("No brand");

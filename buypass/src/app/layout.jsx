@@ -1,6 +1,4 @@
 import "./globals.css";
-import Logo from "./components/Logo";
-import Header from "./components/Header";
 
 export const metadata = {
   title: "BuyPass",
