@@ -1,7 +1,12 @@
 import React, { useContext, useState } from "react";
-import { BrandContext } from "@/app/page";
+
 import Image from "next/image";
 import Link from "next/link";
+
+import GglResModal from "./GglResModal";
+
+import { BrandContext, GLoadingContext, ModalContext } from "../page";
+
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 
 const rainforestKey = process.env.NEXT_PUBLIC_RAINFOREST_KEY;
@@ -9,16 +14,32 @@ const baseURL = `https://api.rainforestapi.com/request?`;
 const amazon_domain = `amazon.com`;
 
 export default function AmazonCard({ result }) {
+  const { modal, setModal } = useContext(ModalContext);
+  const { brand, setBrand } = useContext(BrandContext);
+  const { gLoading, setGLoading } = useContext(GLoadingContext);
+
   const { asin, image, link, title, price, rating, ratings_total, unit_price } =
     result;
-  const { brand, setBrand } = useContext(BrandContext);
+
+  let itemPrice;
+  let dollars;
+  let cents;
+
+  if (price) {
+    itemPrice = parseInt(price.raw.slice(1));
+    dollars = Math.trunc(itemPrice);
+    cents = itemPrice - Math.trunc(itemPrice);
+  }
 
   const handleClick = async () => {
+    setGLoading(true);
+    setModal(true);
     try {
       const res = await fetch(
         `${baseURL}api_key=${rainforestKey}&type=product&amazon_domain=${amazon_domain}&asin=${asin}`
       );
       const productObject = await res.json();
+      console.log(productObject);
 
       const brandName = productObject.product.brand;
       console.log(brandName);
@@ -61,23 +82,33 @@ export default function AmazonCard({ result }) {
 
   return (
     <div className="text-[#0F1111] block text-sm max-w-md px-1 h-[100%] my-4 rounded">
-      <div className="image-container mb-2 px-2 text-center bg-[#f7f7f7]">
-        <div className="flex pt-[100%] relative cursor-pointer justify-center h-8 w-auto">
+      {/* {showModal && (
+        <GglResModal
+          brand={brand}
+          gLoading={gLoading}
+          setGLoading={setGLoading}
+        />
+      )} */}
+
+      <div className="relative mb-2 px-2 text-center bg-[#f7f7f7]">
+        <div className="flex pt-[100%] justify-center h-8 w-auto z-0">
           <Image
-            loader={() => image}
             src={image}
+            loader={() => image}
+            unoptimized={true}
+            className="absolute top-0 w-auto h-[100%] mx-auto bg-[#f7f7f7]"
             width={300}
             height={600}
             alt="product"
-            className="absolute top-0 w-auto h-[100%] mx-auto bg-[#f7f7f7]"
           />
         </div>
       </div>
-
       <div className="px-2 mb-2">
         <div className="mt-2">
           <Link href={link} target="_blank" className="hover:text-[#C7511F]">
-            <h2 className="text-s text-ellipsis overflow-hidden">{title}</h2>
+            <h2 className="text-s line-clamp-3 text-ellipsis hover:line-clamp-none">
+              {title}
+            </h2>
             <div className="mt-1 text-[#0F1111] font-bold text-xs">
               ASIN: {asin}
             </div>
@@ -85,57 +116,67 @@ export default function AmazonCard({ result }) {
         </div>
 
         <div>
-          <div className="border-2 border-blue-300">
+          <div>
             {starArray.map((star) => {
               switch (star) {
                 case "full":
                   return (
                     <BsStarFill className="pt-1 align-top inline text-[#FF9900]" />
                   );
-                  break;
+                // break;
                 case "half":
                   return (
                     <BsStarHalf className="pt-1 align-top inline text-[#FF9900]" />
                   );
-                  break;
+                // break;
                 case "empty":
                   return (
                     <BsStar className="pt-1 align-top inline text-[#FF9900]" />
                   );
-                  break;
+                // break;
               }
             })}
-            <span className="ml-1 font-bold">{rating}</span>
-            <span className="text-xs text-[#007185] ml-2">
+            <span className="mx-1 font-bold">{rating}</span>
+            <span className="inline-block text-xs text-[#007185]">
               ({ratings_total} reviews)
             </span>
           </div>
         </div>
 
-        <div className="mt-2">
-          <div>
-            <span className="top-[-.75em] text-xs">$</span>
-            <span className="text-2xl">{Math.trunc(price.value)}</span>
-            <span className="absolute">
-              <span className="relative text-xs">
-                {Math.trunc(
-                  (price.value - Math.trunc(price.value)).toFixed(2) * 100
-                )}
+        {price && (
+          <div className="mt-2">
+            <div>
+              <span className="absolute pt-1 text-xs">{price.symbol}</span>
+              <span className="text-2xl ml-1.5">{dollars}</span>
+              <span className="absolute">
+                <span className="relative text-xs">
+                  {cents === 0 ? (
+                    <>00</>
+                  ) : (
+                    <>
+                      {Math.trunc(
+                        (itemPrice - Math.trunc(itemPrice)).toFixed(2) * 100
+                      )}
+                    </>
+                  )}
+                </span>
               </span>
-            </span>
-            <span className="ml-5 text-[#565959] text-sm">({unit_price})</span>
+              <span className="ml-5 text-[#565959] text-sm">
+                {unit_price && <>({unit_price})</>}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="flex">
+        <div className="flex border-2 justify-center align-middle">
           <Link href={link} target="_blank">
-            <button className="inline-block bg-[#ffd81469] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)] text-slate-400">
+            <button className="flex-auto inline-block bg-[#ffd81469] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)] text-slate-400">
               Buy on Amazon
             </button>
           </Link>
           <button
             onClick={handleClick}
-            className="inline-block bg-[#FFD814] border-[#FCD200] text-sm px-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)]"
+            className="flex-auto inline-block bg-[#FFD814] border-[#FCD200] text-sm px-2 my-2 text-center align-middle rounded-lg shadow-[0_2px_5px_0_rgba(213,217,217,.5)]"
           >
             <span className="font-bold">BUYPASS </span>Amazon
           </button>
