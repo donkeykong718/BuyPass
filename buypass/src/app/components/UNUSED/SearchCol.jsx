@@ -5,9 +5,11 @@ import { SearchContext, SearchTermContext } from "@/app/page";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 
 export default function SearchCol() {
-  const { search, setSearch } = useContext(SearchContext);
+  // const { search, setSearch } = useContext(SearchContext);
   const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
   const [input, setInput] = useState("");
+
+  const song = new Audio("./BezosKills.mp3");
 
   const handleSearchChange = (e) => {
     const { value } = e.target;
@@ -17,7 +19,9 @@ export default function SearchCol() {
   const handleSearch = async (e) => {
     e.preventDefault();
     setSearchTerm(input);
-    setSearch(true);
+    setInput();
+    song.play();
+    // setSearch(true);
   };
 
   return (

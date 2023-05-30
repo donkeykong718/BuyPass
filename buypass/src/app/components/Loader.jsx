@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Loader() {
+  // const song = new Audio("./BezosKills.mp3");
+
   return (
-    <div className="text-center text-lg pb-[8] font-Ember">
+    <div className="fixed w-fit h-fit p-5 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50 text-center text-lg font-Ember shadow-[100px_100px_100px_9999999px_rgba(0,0,0,0.7)] bg-white">
       {/* <iframe
         width="560"
         height="315"
