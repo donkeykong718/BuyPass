@@ -31,13 +31,16 @@ export default function AmazonCard({ result, searchTerm }) {
   // const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
 
   const [results, setResults] = useState(null);
+  const [song, setSong] = useState(null);
 
   const { asin, image, link, title, price, rating, ratings_total, unit_price } =
     result;
 
   // const router = useRouter();
 
-  const song = new Audio("./BezosKills.mp3");
+  useEffect(() => {
+    setSong(new Audio("./BezosKills.mp3"));
+  }, []);
 
   let itemPrice;
   let dollars;

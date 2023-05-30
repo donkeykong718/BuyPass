@@ -21,8 +21,11 @@ export default function AmznResCol({ searchTerm, newSearch }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   // const [showModal, setShowModal] = useState(false);
+  const [song, setSong] = useState(null);
 
-  const song = new Audio("/BezosKills.mp3");
+  useEffect(() => {
+    setSong(new Audio("./BezosKills.mp3"));
+  }, []);
 
   useEffect(() => {
     console.log("The useEffect has been triggered");

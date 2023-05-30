@@ -10,8 +10,6 @@ export default function Results() {
   const [searchTerm, setSearchTerm] = useState("");
   const [newSearch, setNewSearch] = useState(false);
 
-  const song = new Audio("./BezosKills.mp3");
-
   const handleChange = (e) => {
     const { value } = e.target;
     setInput(value);
