@@ -42,9 +42,9 @@ export default function Loader() {
           https://www.amazonlaborunion.org
         </Link>
       </div>
-      <div className="relative w-100; bottom-0 mt-5 bg-slate-900 text-white p-3 hover:bg-slate-400 hover:text-slate-900">
-        <p className="italic text-sm">
-          Credit: "Spirit Halloween Theme Song" by{" "}
+      <div className="relative w-100; bottom-0 mt-5 bg-slate-900 text-white p-3 hover:bg-slate-400 hover:text-slate-900 hover:bold">
+        <p className="italic text-xs">
+          Song Credit: "Spirit Halloween Theme Song" by{" "}
           <Link
             className="hover:text-[#180ea4] bold mt-2 hover:underline"
             href="https://www.nicklutsko.com/"

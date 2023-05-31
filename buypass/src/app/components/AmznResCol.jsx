@@ -116,7 +116,7 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
         </div>
       ) : (
         // <ModalContext.Provider value={{ showModal, setShowModal }}>
-        <div className="overflow-y-scoll grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+        <div className="grid overflow-y-scroll grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
           {smallBusinesses.map((result, index) => {
             return (
               <AmazonCard

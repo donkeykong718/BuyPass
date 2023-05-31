@@ -289,37 +289,43 @@ export default function AmazonCard({ result, searchTerm, mute }) {
         </div>
 
         <div>
-          <div>
-            {starArray.map((star) => {
-              switch (star) {
-                case "full":
-                  return (
-                    <BsStarFill className="pt-1 align-top inline text-[#FF9900]" />
-                  );
-                // break;
-                case "half":
-                  return (
-                    <BsStarHalf className="pt-1 align-top inline text-[#FF9900]" />
-                  );
-                // break;
-                case "empty":
-                  return (
-                    <BsStar className="pt-1 align-top inline text-[#FF9900]" />
-                  );
-                // break;
-              }
-            })}
-            <span className="mx-1 font-bold">{rating}</span>
-            <span className="inline-block text-xs text-[#007185]">
-              ({ratings_total} reviews)
-            </span>
-          </div>
+          {rating ? (
+            <div>
+              {starArray.map((star) => {
+                switch (star) {
+                  case "full":
+                    return (
+                      <BsStarFill className="pt-1 align-top inline text-[#FF9900]" />
+                    );
+                  // break;
+                  case "half":
+                    return (
+                      <BsStarHalf className="pt-1 align-top inline text-[#FF9900]" />
+                    );
+                  // break;
+                  case "empty":
+                    return (
+                      <BsStar className="pt-1 align-top inline text-[#FF9900]" />
+                    );
+                  // break;
+                }
+              })}
+              <span className="mx-1 font-bold">{rating}</span>
+              <span className="inline-block text-xs text-[#007185]">
+                ({ratings_total} ratings)
+              </span>
+            </div>
+          ) : (
+            <p className="text-xs mt-1">No ratings available.</p>
+          )}
         </div>
 
         {price && (
-          <div className="mt-2">
+          <div className="mt-2 relative">
             <div classname="relative">
-              <span className="absolute pt-1 text-xs">{price.symbol}</span>
+              <span className="absolute pt-1 translate-x-[-2] text-xs">
+                {price.symbol}
+              </span>
               <span className="text-2xl ml-1.5">{dollars}</span>
               <span className="absolute">
                 <span className="relative text-xs">
