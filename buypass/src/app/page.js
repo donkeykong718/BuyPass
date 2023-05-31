@@ -2,6 +2,8 @@
 
 import React, { useState, Suspense } from "react";
 
+import Image from "next/image";
+
 import Logo from "./components/Logo";
 import Header from "./components/Header";
 // import SearchCol from "./components/SearchCol";
@@ -12,6 +14,7 @@ import Results from "./components/Results";
 
 // export const BrandContext = React.createContext();
 export const GLoadingContext = React.createContext();
+// export const MuteContext = React.createContext();
 // export const ModalContext = React.createContext();
 // export const SearchContext = React.createContext();
 // export const SearchTermContext = React.createContext();
@@ -19,17 +22,20 @@ export const GLoadingContext = React.createContext();
 export default function Main() {
   // const [brand, setBrand] = useState(null);
   const [gLoading, setGLoading] = useState(false);
+  // const [mute, setMute] = useState(false);
   // const [modal, setModal] = useState(false);
   // const [search, setSearch] = useState(false);
   // const [searchTerm, setSearchTerm] = useState(null);
 
   return (
     <main className="text-center font-Bookerly">
-      <div className="bg-white min-h-[25%] max-h-[32%]">
-        <Logo />
-        <Header />
+      {/* <MuteContext.Provider value={{ mute, setMute }}> */}
+      <div className="p-1">
+        <div className="sticky bg-white min-h-[25%] max-h-[32%]">
+          <Logo />
+          <Header />
+        </div>
       </div>
-
       <GLoadingContext.Provider value={{ gLoading, setGLoading }}>
         {gLoading && (
           <Loader />
@@ -47,7 +53,7 @@ export default function Main() {
         )}
         <Results />
       </GLoadingContext.Provider>
-
+      {/* </MuteContext.Provider> */}
       {/* <SearchContext.Provider value={{ search, setSearch }}>
         <SearchTermContext.Provider value={{ searchTerm, setSearchTerm }}>
           <div className=" bg-white h-[10vh] w-[100%] pt-4">

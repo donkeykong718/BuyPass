@@ -3,16 +3,9 @@ import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { useRouter } from "next/navigation";
-
 // import GglResModal from "./GglResModal";
 
-import {
-  BrandContext,
-  GLoadingContext,
-  ModalContext,
-  SearchTermContext,
-} from "../page";
+import { GLoadingContext, MuteContext } from "../page";
 
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 
@@ -24,14 +17,16 @@ const googleKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 const googleURL = `https://www.googleapis.com/customsearch/v1`;
 const customSearch = process.env.NEXT_PUBLIC_googleCustomSearch;
 
-export default function AmazonCard({ result, searchTerm }) {
+export default function AmazonCard({ result, searchTerm, mute }) {
   // const { modal, setModal } = useContext(ModalContext);
   // const { brand, setBrand } = useContext(BrandContext);
   const { gLoading, setGLoading } = useContext(GLoadingContext);
+  // const { mute, setMute } = useContext(MuteContext);
   // const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
 
   const [results, setResults] = useState(null);
   const [song, setSong] = useState(null);
+  const [playing, setPlaying] = useState(false);
 
   const { asin, image, link, title, price, rating, ratings_total, unit_price } =
     result;
@@ -41,6 +36,17 @@ export default function AmazonCard({ result, searchTerm }) {
   useEffect(() => {
     setSong(new Audio("./BezosKills.mp3"));
   }, []);
+
+  useEffect(() => {
+    if (song) {
+      if (mute && playing) {
+        song.pause();
+        setPlaying(false);
+      } else if (playing) {
+        song.play();
+      }
+    }
+  }, [mute]);
 
   let itemPrice;
   let dollars;
@@ -56,7 +62,11 @@ export default function AmazonCard({ result, searchTerm }) {
   }
 
   const handleClick = async () => {
-    song.play();
+    if (!mute) {
+      song.play();
+      setPlaying(true);
+    }
+
     console.log("1. The button has been clicked");
     setGLoading(true);
     let googleLoad = true;
@@ -86,6 +96,7 @@ export default function AmazonCard({ result, searchTerm }) {
       setGLoading(false);
       window.open(coLink);
       song.pause();
+      setPlaying(false);
       song.currentTime = 0;
     }
     // googleResults ? (coLink = googleResults.formattedUrl) : coLink;
@@ -278,37 +289,43 @@ export default function AmazonCard({ result, searchTerm }) {
         </div>
 
         <div>
-          <div>
-            {starArray.map((star) => {
-              switch (star) {
-                case "full":
-                  return (
-                    <BsStarFill className="pt-1 align-top inline text-[#FF9900]" />
-                  );
-                // break;
-                case "half":
-                  return (
-                    <BsStarHalf className="pt-1 align-top inline text-[#FF9900]" />
-                  );
-                // break;
-                case "empty":
-                  return (
-                    <BsStar className="pt-1 align-top inline text-[#FF9900]" />
-                  );
-                // break;
-              }
-            })}
-            <span className="mx-1 font-bold">{rating}</span>
-            <span className="inline-block text-xs text-[#007185]">
-              ({ratings_total} reviews)
-            </span>
-          </div>
+          {rating ? (
+            <div>
+              {starArray.map((star) => {
+                switch (star) {
+                  case "full":
+                    return (
+                      <BsStarFill className="pt-1 align-top inline text-[#FF9900]" />
+                    );
+                  // break;
+                  case "half":
+                    return (
+                      <BsStarHalf className="pt-1 align-top inline text-[#FF9900]" />
+                    );
+                  // break;
+                  case "empty":
+                    return (
+                      <BsStar className="pt-1 align-top inline text-[#FF9900]" />
+                    );
+                  // break;
+                }
+              })}
+              <span className="mx-1 font-bold">{rating}</span>
+              <span className="inline-block text-xs text-[#007185]">
+                ({ratings_total} ratings)
+              </span>
+            </div>
+          ) : (
+            <p className="text-xs mt-1">No ratings available.</p>
+          )}
         </div>
 
         {price && (
-          <div className="mt-2">
+          <div className="mt-2 relative">
             <div classname="relative">
-              <span className="absolute pt-1 text-xs">{price.symbol}</span>
+              <span className="absolute pt-1 translate-x-[-2] text-xs">
+                {price.symbol}
+              </span>
               <span className="text-2xl ml-1.5">{dollars}</span>
               <span className="absolute">
                 <span className="relative text-xs">

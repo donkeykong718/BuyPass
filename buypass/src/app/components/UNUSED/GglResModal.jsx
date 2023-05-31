@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 import Link from "next/link";
 
-import Loader from "./Loader";
+import Loader from "../Loader";
 import GResults from "./GResults";
 
 import {
@@ -12,9 +12,9 @@ import {
   SearchTermContext,
 } from "@/app/page";
 
-import { extractThumbnail } from "../utilities/extractThumbnail";
-import { extractIcon } from "../utilities/extractIcon";
-import { fetchHtml } from "../utilities/fetchHtml";
+import { extractThumbnail } from "../../utilities/extractThumbnail";
+import { extractIcon } from "../../utilities/extractIcon";
+import { fetchHtml } from "../../utilities/fetchHtml";
 
 import { AiOutlineClose } from "react-icons/ai";
 
