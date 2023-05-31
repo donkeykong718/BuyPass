@@ -5,12 +5,7 @@ import Link from "next/link";
 
 // import GglResModal from "./GglResModal";
 
-import {
-  BrandContext,
-  GLoadingContext,
-  ModalContext,
-  SearchTermContext,
-} from "../page";
+import { GLoadingContext, MuteContext } from "../page";
 
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 
@@ -22,14 +17,16 @@ const googleKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 const googleURL = `https://www.googleapis.com/customsearch/v1`;
 const customSearch = process.env.NEXT_PUBLIC_googleCustomSearch;
 
-export default function AmazonCard({ result, searchTerm }) {
+export default function AmazonCard({ result, searchTerm, mute }) {
   // const { modal, setModal } = useContext(ModalContext);
   // const { brand, setBrand } = useContext(BrandContext);
   const { gLoading, setGLoading } = useContext(GLoadingContext);
+  // const { mute, setMute } = useContext(MuteContext);
   // const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
 
   const [results, setResults] = useState(null);
   const [song, setSong] = useState(null);
+  const [playing, setPlaying] = useState(false);
 
   const { asin, image, link, title, price, rating, ratings_total, unit_price } =
     result;
@@ -39,6 +36,17 @@ export default function AmazonCard({ result, searchTerm }) {
   useEffect(() => {
     setSong(new Audio("./BezosKills.mp3"));
   }, []);
+
+  useEffect(() => {
+    if (song) {
+      if (mute && playing) {
+        song.pause();
+        setPlaying(false);
+      } else if (playing) {
+        song.play();
+      }
+    }
+  }, [mute]);
 
   let itemPrice;
   let dollars;
@@ -54,7 +62,11 @@ export default function AmazonCard({ result, searchTerm }) {
   }
 
   const handleClick = async () => {
-    song.play();
+    if (!mute) {
+      song.play();
+      setPlaying(true);
+    }
+
     console.log("1. The button has been clicked");
     setGLoading(true);
     let googleLoad = true;
@@ -84,6 +96,7 @@ export default function AmazonCard({ result, searchTerm }) {
       setGLoading(false);
       window.open(coLink);
       song.pause();
+      setPlaying(false);
       song.currentTime = 0;
     }
     // googleResults ? (coLink = googleResults.formattedUrl) : coLink;

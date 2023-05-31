@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 
 import Loader from "./Loader";
 import AmazonCard from "./AmazonCard";
+
+import { MuteContext } from "../page";
 
 // import { SearchContext, SearchTermContext } from "@/app/page";
 // import data from "../../sample.json" assert { type: "json" };
@@ -13,27 +15,42 @@ const amazon_domain = `amazon.com`;
 
 // export const ModalContext = React.createContext();
 
-export default function AmznResCol({ searchTerm, newSearch }) {
+export default function AmznResCol({ searchTerm, newSearch, mute }) {
   // const { search, setSearch } = useContext(SearchContext);
   // const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
-
+  // const { mute, setMute } = useContext(MuteContext);
   const [smallBusinesses, setSmallBusinesses] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   // const [showModal, setShowModal] = useState(false);
   const [song, setSong] = useState(null);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     setSong(new Audio("./BezosKills.mp3"));
   }, []);
 
   useEffect(() => {
+    if (song) {
+      if (mute && playing) {
+        song.pause();
+        setPlaying(false);
+      } else if (playing) {
+        song.play();
+      }
+    }
+  }, [mute]);
+
+  useEffect(() => {
     console.log("The useEffect has been triggered");
     console.log("The searchTerm is: " + searchTerm);
     if (searchTerm != "") {
       setLoading(true);
-      song.currentTime = 0;
-      song.play();
+      if (!mute) {
+        song.currentTime = 0;
+        song.play();
+        setPlaying(true);
+      }
       getResults();
       console.log(`Loading is set to ${loading} (hopefully true)`);
     } else {
@@ -47,6 +64,7 @@ export default function AmznResCol({ searchTerm, newSearch }) {
     setResults(res);
     setLoading(false);
     song.pause();
+    setPlaying(false);
     console.log(`Loading is set to ${loading} (hopefully false)`);
   };
 
@@ -86,7 +104,7 @@ export default function AmznResCol({ searchTerm, newSearch }) {
       {loading && <Loader />}
       {searchTerm != "" && smallBusinesses.length === 0 && !loading ? (
         <div>
-          <p>There are no small businesses selling {searchTerm} on Amazon.</p>
+          <p>There are no small businesses selling "{searchTerm}" on Amazon.</p>
           <div>
             <Link
               href="https://www.sba.gov/business-guide/10-steps-start-your-business"
@@ -98,10 +116,15 @@ export default function AmznResCol({ searchTerm, newSearch }) {
         </div>
       ) : (
         // <ModalContext.Provider value={{ showModal, setShowModal }}>
-        <div className="overfloy-y-scoll grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+        <div className="overflow-y-scoll grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
           {smallBusinesses.map((result, index) => {
             return (
-              <AmazonCard result={result} searchTerm={searchTerm} key={index} />
+              <AmazonCard
+                result={result}
+                searchTerm={searchTerm}
+                mute={mute}
+                key={index}
+              />
             );
           })}
         </div>
