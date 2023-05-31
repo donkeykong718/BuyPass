@@ -9,8 +9,6 @@ export default function SearchCol() {
   const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
   const [input, setInput] = useState("");
 
-  const song = new Audio("./BezosKills.mp3");
-
   const handleSearchChange = (e) => {
     const { value } = e.target;
     setInput(value);
@@ -20,7 +18,6 @@ export default function SearchCol() {
     e.preventDefault();
     setSearchTerm(input);
     setInput();
-    song.play();
     // setSearch(true);
   };
 
