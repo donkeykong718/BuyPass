@@ -26,10 +26,8 @@ export default function Results() {
 
   const handleClick = (event) => {
     if (event.target.checked === true) {
-      console.log("Checked");
       setMute(true);
     } else {
-      console.log("Not Checked");
       setMute(false);
     }
   };
@@ -64,7 +62,7 @@ export default function Results() {
           />
         </div>
         <Image
-          src="/favicon.ico"
+          src="/buypassicon.ico"
           width={16}
           height={16}
           alt="icon"

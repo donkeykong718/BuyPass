@@ -42,8 +42,6 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
   }, [mute]);
 
   useEffect(() => {
-    console.log("The useEffect has been triggered");
-    console.log("The searchTerm is: " + searchTerm);
     if (searchTerm != "") {
       setLoading(true);
       if (!mute) {
@@ -52,7 +50,6 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
         setPlaying(true);
       }
       getResults();
-      console.log(`Loading is set to ${loading} (hopefully true)`);
     } else {
       console.log("No searchTerm yet");
     }
@@ -65,20 +62,15 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
     setLoading(false);
     song.pause();
     setPlaying(false);
-    console.log(`Loading is set to ${loading} (hopefully false)`);
   };
 
   async function amazonSearch(searchTerm) {
-    console.log(`AmazonSearch has started for ${searchTerm}`);
     try {
       const res = await fetch(
         `${baseURL}api_key=${rainforestKey}&type=search&amazon_domain=${amazon_domain}&search_term=${searchTerm}`
       );
       const json = await res.json();
       const searchResults = json.search_results;
-
-      console.log("The search results are:");
-      console.log(searchResults);
 
       const smallBizArray = [];
 
@@ -88,7 +80,6 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
         }
       }
       setSmallBusinesses(smallBizArray);
-      console.log("Small biz:", smallBizArray);
 
       return smallBizArray;
     } catch (error) {

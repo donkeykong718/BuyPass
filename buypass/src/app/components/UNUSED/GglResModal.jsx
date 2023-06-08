@@ -38,7 +38,6 @@ export default function GglResModal() {
 
   const getResults = async () => {
     const res = await googleSearch(brand);
-    console.log(res);
     setResults(res);
     setGLoading(false);
   };
