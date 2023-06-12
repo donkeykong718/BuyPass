@@ -8,9 +8,11 @@ import Loader from "./components/Loader";
 import Results from "./components/Results";
 
 export const GLoadingContext = React.createContext();
+export const MuteContext = React.createContext();
 
 export default function Main() {
   const [gLoading, setGLoading] = useState(false);
+  const [mute, setMute] = useState(true);
 
   return (
     <main className="text-center font-Bookerly">
@@ -20,10 +22,12 @@ export default function Main() {
           <Header />
         </div>
       </div>
-      <GLoadingContext.Provider value={{ gLoading, setGLoading }}>
-        {gLoading && <Loader />}
-        <Results />
-      </GLoadingContext.Provider>
+      <MuteContext.Provider value={{ mute, setMute }}>
+        <GLoadingContext.Provider value={{ gLoading, setGLoading }}>
+          {gLoading && <Loader />}
+          <Results />
+        </GLoadingContext.Provider>
+      </MuteContext.Provider>
     </main>
   );
 }

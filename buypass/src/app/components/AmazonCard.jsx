@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { GLoadingContext } from "../page";
+import { GLoadingContext, MuteContext } from "../page";
 
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 
@@ -15,8 +15,9 @@ const googleKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 const googleURL = `https://www.googleapis.com/customsearch/v1`;
 const customSearch = process.env.NEXT_PUBLIC_googleCustomSearch;
 
-export default function AmazonCard({ result, searchTerm, mute }) {
+export default function AmazonCard({ result, searchTerm }) {
   const { gLoading, setGLoading } = useContext(GLoadingContext);
+  const { mute, setMute } = useContext(MuteContext);
 
   const [results, setResults] = useState(null);
   const [song, setSong] = useState(null);

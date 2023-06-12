@@ -15,10 +15,10 @@ const amazon_domain = `amazon.com`;
 
 // export const ModalContext = React.createContext();
 
-export default function AmznResCol({ searchTerm, newSearch, mute }) {
+export default function AmznResCol({ searchTerm, newSearch }) {
   // const { search, setSearch } = useContext(SearchContext);
   // const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
-  // const { mute, setMute } = useContext(MuteContext);
+  const { mute, setMute } = useContext(MuteContext);
   const [smallBusinesses, setSmallBusinesses] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,8 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
   }, [mute]);
 
   useEffect(() => {
-    if (searchTerm != "") {
+    const dontSearch = ["", " ", null, "null", undefined, "undefined"];
+    if (!dontSearch.includes(searchTerm)) {
       setLoading(true);
       if (!mute) {
         song.currentTime = 0;
@@ -110,12 +111,7 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
         <div className="grid overflow-y-scroll grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
           {smallBusinesses.map((result, index) => {
             return (
-              <AmazonCard
-                result={result}
-                searchTerm={searchTerm}
-                mute={mute}
-                key={index}
-              />
+              <AmazonCard result={result} searchTerm={searchTerm} key={index} />
             );
           })}
         </div>
