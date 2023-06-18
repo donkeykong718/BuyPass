@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import AmznResCol from "../components/AmznResCol";
-import Image from "next/image";
 
 import { HiMagnifyingGlass } from "react-icons/hi2";
 
@@ -10,7 +9,6 @@ export default function Results() {
   const [input, setInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [newSearch, setNewSearch] = useState(false);
-  const [mute, setMute] = useState(false);
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -22,16 +20,6 @@ export default function Results() {
     setSearchTerm(input);
     setInput();
     setNewSearch(true);
-  };
-
-  const handleClick = (event) => {
-    if (event.target.checked === true) {
-      console.log("Checked");
-      setMute(true);
-    } else {
-      console.log("Not Checked");
-      setMute(false);
-    }
   };
 
   return (
@@ -51,7 +39,7 @@ export default function Results() {
           </form>
         </div>
       </div>
-      <div className="flex z-20 justify-end align-baseline mr-2">
+      {/* <div className="flex z-20 justify-end align-baseline mr-2">
         <div>
           <label className="m-1 text-[#5f5f5f] text-xs" htmlFor="mute_checkbox">
             Mute Audio?{" "}
@@ -64,14 +52,14 @@ export default function Results() {
           />
         </div>
         <Image
-          src="/favicon.ico"
+          src="/buypassicon.ico"
           width={16}
           height={16}
           alt="icon"
           className="w-5 h-5 m-1"
         />
-      </div>
-      <AmznResCol searchTerm={searchTerm} newSearch={newSearch} mute={mute} />
+      </div> */}
+      <AmznResCol searchTerm={searchTerm} newSearch={newSearch} />
     </div>
   );
 }

@@ -3,8 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-// import GglResModal from "./GglResModal";
-
 import { GLoadingContext, MuteContext } from "../page";
 
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
@@ -17,114 +15,89 @@ const googleKey = process.env.NEXT_PUBLIC_GOOGLE_KEY;
 const googleURL = `https://www.googleapis.com/customsearch/v1`;
 const customSearch = process.env.NEXT_PUBLIC_googleCustomSearch;
 
-export default function AmazonCard({ result, searchTerm, mute }) {
-  // const { modal, setModal } = useContext(ModalContext);
-  // const { brand, setBrand } = useContext(BrandContext);
+export default function AmazonCard({ result, searchTerm }) {
   const { gLoading, setGLoading } = useContext(GLoadingContext);
   // const { mute, setMute } = useContext(MuteContext);
-  // const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
 
   const [results, setResults] = useState(null);
-  const [song, setSong] = useState(null);
-  const [playing, setPlaying] = useState(false);
+  // const [song, setSong] = useState(null);
+  // const [playing, setPlaying] = useState(false);
 
-  const { asin, image, link, title, price, rating, ratings_total, unit_price } =
-    result;
+  const {
+    asin,
+    authors,
+    image,
+    link,
+    title,
+    price,
+    rating,
+    ratings_total,
+    unit_price,
+  } = result;
 
-  // const router = useRouter();
+  // useEffect(() => {
+  //   setSong(new Audio("./BezosKills.mp3"));
+  // }, []);
 
-  useEffect(() => {
-    setSong(new Audio("./BezosKills.mp3"));
-  }, []);
-
-  useEffect(() => {
-    if (song) {
-      if (mute && playing) {
-        song.pause();
-        setPlaying(false);
-      } else if (playing) {
-        song.play();
-      }
-    }
-  }, [mute]);
+  // useEffect(() => {
+  //   if (song) {
+  //     if (playing && !mute) {
+  //       song.play();
+  //     } else {
+  //       song.pause();
+  //       setPlaying(false);
+  //     }
+  //   }
+  // }, [mute]);
 
   let itemPrice;
   let dollars;
   let cents;
 
   if (price) {
-    // itemPrice = parseInt(price.raw.slice(1));
     itemPrice = price.value;
-    console.log("Item price is" + itemPrice);
     dollars = Math.trunc(itemPrice);
     cents = itemPrice - Math.trunc(itemPrice);
-    console.log("The cents are" + cents);
   }
 
   const handleClick = async () => {
-    if (!mute) {
-      song.play();
-      setPlaying(true);
-    }
+    // setPlaying(true);
+    // if (!mute) {
+    //   song.play();
+    // }
 
-    console.log("1. The button has been clicked");
     setGLoading(true);
     let googleLoad = true;
-    console.log("2. Google Load has been set to true " + googleLoad);
-    // setModal(true);
-    // console.log("3. Modal has been set to true " + modal);
     let brandName;
-    while (googleLoad) {
-      console.log(
-        "4. We are still waiting for brandName to be defined, so gLoading is still true " +
-          googleLoad +
-          brandName
-      );
-      brandName = await asinSearch(asin);
-      console.log("5. Okay, still doing the asinSearch with " + asin);
-      brandName ? (googleLoad = false) : (googleLoad = true);
+    if (authors) {
+      brandName = authors[0].name;
+    } else {
+      while (googleLoad) {
+        brandName = await asinSearch(asin);
+        brandName ? (googleLoad = false) : (googleLoad = true);
+      }
     }
-    console.log("6. Yay, brandName has been defined! It's" + brandName);
-    // setGLoading(true);
-    // console.log("6. Whoops, let's put GLoading back to true") + gLoading;
     let googleResults;
     let coLink;
     brandName ? (googleResults = await getResults(brandName)) : googleResults;
-    console.log("14. And now the googleResults are back in the handleClick.");
     if (googleResults) {
       coLink = googleResults.formattedUrl;
       setGLoading(false);
       window.open(coLink);
-      song.pause();
-      setPlaying(false);
-      song.currentTime = 0;
+      // song.pause();
+      // setPlaying(false);
+      // song.currentTime = 0;
     }
-    // googleResults ? (coLink = googleResults.formattedUrl) : coLink;
-    // console.log("15. Which is how we get that company link" + coLink);
-    // coLink ? router.push(coLink) : console.log("No co-link");
-    // window.open(coLink);
   };
 
   const getResults = async (brandName) => {
-    console.log(
-      "7. Hey, getResults has been called, with brandName " + brandName
-    );
     const res = await googleSearch(brandName);
-    console.log("12. Would you look at that? We have results:");
-    console.log(res);
     setResults(res);
-    console.log(
-      "13. And now that the results have been set, we can set state. The state is: "
-    );
-    console.log(results);
-    // setGLoading(false);
     return res;
   };
 
   const googleSearch = async (brandName) => {
-    console.log(
-      "8. Hey, googleSearch has been called, with brandName " + brandName
-    );
+    console.log("Google search has started for " + brandName);
     const lowBrandName = brandName.toLowerCase();
     let lowSearchTerm;
     let fullSearch;
@@ -158,16 +131,13 @@ export default function AmazonCard({ result, searchTerm, mute }) {
     const enFullSearch = encodeURIComponent(fullSearch);
 
     try {
-      console.log(
-        "9. Okay, it's time to do a google search with " + enFullSearch
-      );
       const res = await fetch(
         `${googleURL}?q=${enFullSearch}&cx=${customSearch}&key=${googleKey}&num=10`
       );
       const results = await res.json();
       const brandSearchResult = results.items;
-      console.log("10. Hurray, we have results! They are: ");
-      console.log(results.items);
+
+      console.log(brandSearchResult);
 
       const exlArr = [
         `amazon`,
@@ -192,7 +162,6 @@ export default function AmazonCard({ result, searchTerm, mute }) {
           brandSearchResult.shift();
         } else exclude = false;
       }
-      console.log("11. Okay, we've whittled it down to this:");
       console.log(brandSearchResult[0]);
       return brandSearchResult[0];
     } catch (error) {
@@ -204,18 +173,14 @@ export default function AmazonCard({ result, searchTerm, mute }) {
 
   const asinSearch = async (asin) => {
     try {
-      console.log("5. Okay, we're STARTING the asinSearch with " + asin);
       const res = await fetch(
         `${baseURL}api_key=${rainforestKey}&type=product&amazon_domain=${amazon_domain}&asin=${asin}`
       );
       const productObject = await res.json();
-      // console.log(productObject);
+      console.log(productObject);
 
-      const brandName = productObject.product.brand;
-      console.log("6. Yay, we got a brandName! It's " + brandName);
+      const brandName = productObject.product.brand || title;
       return brandName;
-
-      // setBrand(brandName);
     } catch (error) {
       console.log(error);
       return null;
@@ -322,7 +287,7 @@ export default function AmazonCard({ result, searchTerm, mute }) {
 
         {price && (
           <div className="mt-2 relative">
-            <div classname="relative">
+            <div className="relative">
               <span className="absolute pt-1 translate-x-[-2] text-xs">
                 {price.symbol}
               </span>

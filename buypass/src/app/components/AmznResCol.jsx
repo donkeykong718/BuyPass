@@ -15,7 +15,7 @@ const amazon_domain = `amazon.com`;
 
 // export const ModalContext = React.createContext();
 
-export default function AmznResCol({ searchTerm, newSearch, mute }) {
+export default function AmznResCol({ searchTerm, newSearch }) {
   // const { search, setSearch } = useContext(SearchContext);
   // const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
   // const { mute, setMute } = useContext(MuteContext);
@@ -23,36 +23,34 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   // const [showModal, setShowModal] = useState(false);
-  const [song, setSong] = useState(null);
-  const [playing, setPlaying] = useState(false);
+  // const [song, setSong] = useState(null);
+  // const [playing, setPlaying] = useState(false);
+
+  // useEffect(() => {
+  //   setSong(new Audio("./BezosKills.mp3"));
+  // }, []);
+
+  // useEffect(() => {
+  //   if (song) {
+  //     if (mute && playing) {
+  //       song.pause();
+  //       setPlaying(false);
+  //     } else if (playing) {
+  //       song.play();
+  //     }
+  //   }
+  // }, [mute]);
 
   useEffect(() => {
-    setSong(new Audio("./BezosKills.mp3"));
-  }, []);
-
-  useEffect(() => {
-    if (song) {
-      if (mute && playing) {
-        song.pause();
-        setPlaying(false);
-      } else if (playing) {
-        song.play();
-      }
-    }
-  }, [mute]);
-
-  useEffect(() => {
-    console.log("The useEffect has been triggered");
-    console.log("The searchTerm is: " + searchTerm);
-    if (searchTerm != "") {
+    const dontSearch = ["", " ", null, "null", undefined, "undefined"];
+    if (!dontSearch.includes(searchTerm)) {
       setLoading(true);
-      if (!mute) {
-        song.currentTime = 0;
-        song.play();
-        setPlaying(true);
-      }
+      // if (!mute) {
+      //   song.currentTime = 0;
+      //   song.play();
+      //   setPlaying(true);
+      // }
       getResults();
-      console.log(`Loading is set to ${loading} (hopefully true)`);
     } else {
       console.log("No searchTerm yet");
     }
@@ -63,22 +61,17 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
     const res = await amazonSearch(searchTerm);
     setResults(res);
     setLoading(false);
-    song.pause();
-    setPlaying(false);
-    console.log(`Loading is set to ${loading} (hopefully false)`);
+    // song.pause();
+    // setPlaying(false);
   };
 
   async function amazonSearch(searchTerm) {
-    console.log(`AmazonSearch has started for ${searchTerm}`);
     try {
       const res = await fetch(
         `${baseURL}api_key=${rainforestKey}&type=search&amazon_domain=${amazon_domain}&search_term=${searchTerm}`
       );
       const json = await res.json();
       const searchResults = json.search_results;
-
-      console.log("The search results are:");
-      console.log(searchResults);
 
       const smallBizArray = [];
 
@@ -87,8 +80,8 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
           smallBizArray.push(result);
         }
       }
+      console.log(smallBizArray);
       setSmallBusinesses(smallBizArray);
-      console.log("Small biz:", smallBizArray);
 
       return smallBizArray;
     } catch (error) {
@@ -119,12 +112,7 @@ export default function AmznResCol({ searchTerm, newSearch, mute }) {
         <div className="grid overflow-y-scroll grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
           {smallBusinesses.map((result, index) => {
             return (
-              <AmazonCard
-                result={result}
-                searchTerm={searchTerm}
-                mute={mute}
-                key={index}
-              />
+              <AmazonCard result={result} searchTerm={searchTerm} key={index} />
             );
           })}
         </div>

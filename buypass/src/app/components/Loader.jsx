@@ -1,24 +1,42 @@
 import Image from "next/image";
 import Link from "next/link";
-// import { useContext } from "react";
+import { useContext, useState } from "react";
+import { AiOutlineCloseSquare, AiFillCloseSquare } from "react-icons/ai";
 
-// import { MuteContext } from "../page";
+import { GLoadingContext, MuteContext } from "../page";
 
 export default function Loader() {
-  // const song = new Audio("./BezosKills.mp3");
+  const { gLoading, setGLoading } = useContext(GLoadingContext);
   // const { mute, setMute } = useContext(MuteContext);
 
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleClick = (event) => {
+    if (event.target.checked === true) {
+      setMute(true);
+    } else {
+      setMute(false);
+    }
+  };
+
+  const handleClose = () => {
+    setGLoading(false);
+    console.log("Clicked");
+    console.log(gLoading);
+  };
+
   return (
-    <div className="fixed w-fit h-fit p-5 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50 text-center text-lg font-Ember shadow-[100px_100px_100px_9999999px_rgba(0,0,0,0.7)] bg-white">
-      {/* <iframe
-        width="560"
-        height="315"
-        src="https://www.youtube.com/embed/77cMmCVBT3g?controls=0&amp;start=73"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      ></iframe> */}
+    <div className="fixed w-fit h-fit p-5 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50 text-center text-lg font-Ember shadow-[100px_100px_100px_9999999px_rgba(0,0,0,0.7)] bg-white rounded-md border-4 border-[#f19e39]">
+      <div className="flex w-[100%] justify-end">
+        <div
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onClick={() => handleClose()}
+          className="group translate-y-[-8px] translate-x-[8px] scale-[135%] min-h-[32px]"
+        >
+          {isHovered ? <AiFillCloseSquare /> : <AiOutlineCloseSquare />}
+        </div>
+      </div>
       <p className="text-xl font-bold mb-2">Did you know?</p>
       <p>Amazon's speed comes with a hidden cost: </p>
       <p className="text-red-500 italic font-bold">worker exploitation</p>
@@ -42,7 +60,7 @@ export default function Loader() {
           https://www.amazonlaborunion.org
         </Link>
       </div>
-      <div className="relative w-100; bottom-0 mt-5 bg-slate-900 text-white p-3 hover:bg-slate-400 hover:text-slate-900 hover:bold">
+      {/* <div className="relative w-100; bottom-0 mt-5 bg-slate-900 text-white p-3 hover:bg-slate-400 hover:text-slate-900 hover:bold">
         <p className="italic text-xs">
           Song Credit: "Spirit Halloween Theme Song" by{" "}
           <Link
@@ -53,7 +71,31 @@ export default function Loader() {
             Nick Lutsko
           </Link>
         </p>
-      </div>
+        <div className="flex z-20 justify-start align-baseline">
+          <div>
+            <Image
+              src="/buypassicon.ico"
+              width={16}
+              height={16}
+              alt="icon"
+              className="w-5 h-5 m-1 inline"
+            />
+            <label
+              className="m-1 text-[#5f5f5f] text-xs"
+              htmlFor="mute_checkbox"
+            >
+              Mute Audio?{" "}
+            </label>
+            <input
+              type="checkbox"
+              id="mute_checkbox"
+              defaultChecked="true"
+              onClick={(event) => handleClick(event)}
+              className="ml-1 checked:bg-white"
+            />
+          </div>
+        </div>
+      </div> */}
     </div>
   );
 }
