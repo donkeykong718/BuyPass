@@ -17,29 +17,38 @@ const customSearch = process.env.NEXT_PUBLIC_googleCustomSearch;
 
 export default function AmazonCard({ result, searchTerm }) {
   const { gLoading, setGLoading } = useContext(GLoadingContext);
-  const { mute, setMute } = useContext(MuteContext);
+  // const { mute, setMute } = useContext(MuteContext);
 
   const [results, setResults] = useState(null);
-  const [song, setSong] = useState(null);
-  const [playing, setPlaying] = useState(false);
+  // const [song, setSong] = useState(null);
+  // const [playing, setPlaying] = useState(false);
 
-  const { asin, image, link, title, price, rating, ratings_total, unit_price } =
-    result;
+  const {
+    asin,
+    authors,
+    image,
+    link,
+    title,
+    price,
+    rating,
+    ratings_total,
+    unit_price,
+  } = result;
 
-  useEffect(() => {
-    setSong(new Audio("./BezosKills.mp3"));
-  }, []);
+  // useEffect(() => {
+  //   setSong(new Audio("./BezosKills.mp3"));
+  // }, []);
 
-  useEffect(() => {
-    if (song) {
-      if (mute && playing) {
-        song.pause();
-        setPlaying(false);
-      } else if (playing) {
-        song.play();
-      }
-    }
-  }, [mute]);
+  // useEffect(() => {
+  //   if (song) {
+  //     if (playing && !mute) {
+  //       song.play();
+  //     } else {
+  //       song.pause();
+  //       setPlaying(false);
+  //     }
+  //   }
+  // }, [mute]);
 
   let itemPrice;
   let dollars;
@@ -52,17 +61,21 @@ export default function AmazonCard({ result, searchTerm }) {
   }
 
   const handleClick = async () => {
-    if (!mute) {
-      song.play();
-      setPlaying(true);
-    }
+    // setPlaying(true);
+    // if (!mute) {
+    //   song.play();
+    // }
 
     setGLoading(true);
     let googleLoad = true;
     let brandName;
-    while (googleLoad) {
-      brandName = await asinSearch(asin);
-      brandName ? (googleLoad = false) : (googleLoad = true);
+    if (authors) {
+      brandName = authors[0].name;
+    } else {
+      while (googleLoad) {
+        brandName = await asinSearch(asin);
+        brandName ? (googleLoad = false) : (googleLoad = true);
+      }
     }
     let googleResults;
     let coLink;
@@ -71,9 +84,9 @@ export default function AmazonCard({ result, searchTerm }) {
       coLink = googleResults.formattedUrl;
       setGLoading(false);
       window.open(coLink);
-      song.pause();
-      setPlaying(false);
-      song.currentTime = 0;
+      // song.pause();
+      // setPlaying(false);
+      // song.currentTime = 0;
     }
   };
 
@@ -84,6 +97,7 @@ export default function AmazonCard({ result, searchTerm }) {
   };
 
   const googleSearch = async (brandName) => {
+    console.log("Google search has started for " + brandName);
     const lowBrandName = brandName.toLowerCase();
     let lowSearchTerm;
     let fullSearch;
@@ -123,6 +137,8 @@ export default function AmazonCard({ result, searchTerm }) {
       const results = await res.json();
       const brandSearchResult = results.items;
 
+      console.log(brandSearchResult);
+
       const exlArr = [
         `amazon`,
         `walmart`,
@@ -146,6 +162,7 @@ export default function AmazonCard({ result, searchTerm }) {
           brandSearchResult.shift();
         } else exclude = false;
       }
+      console.log(brandSearchResult[0]);
       return brandSearchResult[0];
     } catch (error) {
       console.log(error);
@@ -160,8 +177,9 @@ export default function AmazonCard({ result, searchTerm }) {
         `${baseURL}api_key=${rainforestKey}&type=product&amazon_domain=${amazon_domain}&asin=${asin}`
       );
       const productObject = await res.json();
+      console.log(productObject);
 
-      const brandName = productObject.product.brand;
+      const brandName = productObject.product.brand || title;
       return brandName;
     } catch (error) {
       console.log(error);
@@ -269,7 +287,7 @@ export default function AmazonCard({ result, searchTerm }) {
 
         {price && (
           <div className="mt-2 relative">
-            <div classname="relative">
+            <div className="relative">
               <span className="absolute pt-1 translate-x-[-2] text-xs">
                 {price.symbol}
               </span>

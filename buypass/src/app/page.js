@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState } from "react";
 
 import Logo from "./components/Logo";
 import Header from "./components/Header";
@@ -8,11 +8,11 @@ import Loader from "./components/Loader";
 import Results from "./components/Results";
 
 export const GLoadingContext = React.createContext();
-export const MuteContext = React.createContext();
+// export const MuteContext = React.createContext();
 
 export default function Main() {
   const [gLoading, setGLoading] = useState(false);
-  const [mute, setMute] = useState(true);
+  // const [mute, setMute] = useState(true);
 
   return (
     <main className="text-center font-Bookerly">
@@ -22,12 +22,13 @@ export default function Main() {
           <Header />
         </div>
       </div>
-      <MuteContext.Provider value={{ mute, setMute }}>
-        <GLoadingContext.Provider value={{ gLoading, setGLoading }}>
-          {gLoading && <Loader />}
-          <Results />
-        </GLoadingContext.Provider>
-      </MuteContext.Provider>
+      {/* <MuteContext.Provider value={{ mute, setMute }}> */}
+      <GLoadingContext.Provider value={{ gLoading, setGLoading }}>
+        {gLoading && <Loader />}
+        <Results />
+        {/* <Loader /> */}
+      </GLoadingContext.Provider>
+      {/* </MuteContext.Provider> */}
     </main>
   );
 }

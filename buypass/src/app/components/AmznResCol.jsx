@@ -18,38 +18,38 @@ const amazon_domain = `amazon.com`;
 export default function AmznResCol({ searchTerm, newSearch }) {
   // const { search, setSearch } = useContext(SearchContext);
   // const { searchTerm, setSearchTerm } = useContext(SearchTermContext);
-  const { mute, setMute } = useContext(MuteContext);
+  // const { mute, setMute } = useContext(MuteContext);
   const [smallBusinesses, setSmallBusinesses] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   // const [showModal, setShowModal] = useState(false);
-  const [song, setSong] = useState(null);
-  const [playing, setPlaying] = useState(false);
+  // const [song, setSong] = useState(null);
+  // const [playing, setPlaying] = useState(false);
 
-  useEffect(() => {
-    setSong(new Audio("./BezosKills.mp3"));
-  }, []);
+  // useEffect(() => {
+  //   setSong(new Audio("./BezosKills.mp3"));
+  // }, []);
 
-  useEffect(() => {
-    if (song) {
-      if (mute && playing) {
-        song.pause();
-        setPlaying(false);
-      } else if (playing) {
-        song.play();
-      }
-    }
-  }, [mute]);
+  // useEffect(() => {
+  //   if (song) {
+  //     if (mute && playing) {
+  //       song.pause();
+  //       setPlaying(false);
+  //     } else if (playing) {
+  //       song.play();
+  //     }
+  //   }
+  // }, [mute]);
 
   useEffect(() => {
     const dontSearch = ["", " ", null, "null", undefined, "undefined"];
     if (!dontSearch.includes(searchTerm)) {
       setLoading(true);
-      if (!mute) {
-        song.currentTime = 0;
-        song.play();
-        setPlaying(true);
-      }
+      // if (!mute) {
+      //   song.currentTime = 0;
+      //   song.play();
+      //   setPlaying(true);
+      // }
       getResults();
     } else {
       console.log("No searchTerm yet");
@@ -61,8 +61,8 @@ export default function AmznResCol({ searchTerm, newSearch }) {
     const res = await amazonSearch(searchTerm);
     setResults(res);
     setLoading(false);
-    song.pause();
-    setPlaying(false);
+    // song.pause();
+    // setPlaying(false);
   };
 
   async function amazonSearch(searchTerm) {
@@ -80,6 +80,7 @@ export default function AmznResCol({ searchTerm, newSearch }) {
           smallBizArray.push(result);
         }
       }
+      console.log(smallBizArray);
       setSmallBusinesses(smallBizArray);
 
       return smallBizArray;
